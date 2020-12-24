@@ -65,8 +65,8 @@
     <Compile Include="Piece.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Shape.cs" />
-    <Compile Include="CheckersBoardGame.cs" />
-    <Compile Include="CheckerSquare.cs" />
+    <Compile Include="ChessBoardGame.cs" />
+    <Compile Include="BoardSquare.cs" />
     <Compile Include="Pieces\King.cs" />
     <Compile Include="Pieces\Queen.cs" />
     <Compile Include="Pieces\Rook.cs" />
@@ -74,7 +74,6 @@
     <Compile Include="Pieces\Pawn.cs" />
     <Compile Include="Pieces\Knight.cs" />
     <Compile Include="CastledPiece.cs" />
-    <Compile Include="Move.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -110,7 +109,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\seamless-wood-background-1.jpg">
+    <AndroidResource Include="Resources\drawable\wood.jpg">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -124,6 +123,9 @@
     <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.7.335</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
