@@ -1,0 +1,6 @@
+/Users/shachardavid/projects/FinalProject/FinalProject/obj/Debug/MonoAndroid,Version=v9.0.AssemblyAttributes.cs
+/Users/shachardavid/projects/FinalProject/FinalProject/obj/Debug/build.props
+/Users/shachardavid/projects/FinalProject/FinalProject/obj/Debug/adb.props
+/Users/shachardavid/projects/FinalProject/FinalProject/obj/Debug/FinalProject.csprojAssemblyReference.cache
+/Users/shachardavid/projects/FinalProject/FinalProject/obj/Debug/_VerifyXamarinAndroidSupportVersions.stamp
+/Users/shachardavid/projects/FinalProject/FinalProject/obj/Debug/stamp/_BuildLibraryImportsCache.stamp
