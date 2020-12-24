@@ -24,23 +24,28 @@ namespace FinalProject
 
         public ChessBoardGame(Context context) : base(context)
         {
-            squares = GetBoardSquares(0, 0, 0);
             black = new Piece[12];
             white = new Piece[12];
             //new black and white
-            squares = GetBoardSquares(0, 0, 0);
+            for (int i = 0; i < 8; i++)
+            {
+                Color color= i % 2 == 0 ? Color.White : Color.Black;
+                for (int j = 0; j < 8; j++)
+                {
+                    color = color == Color.White ? Color.Black : Color.White;
+                    squares[j, i] = new BoardSquare(j * 100 + 50, i * 100 + 50, null);
+                    squares[j, i].Color = color;
+                }
+            }
         }
         public void DrawBoard(Canvas canvas)
         {
-            for (int i = 0; i < 8; i++)
+            foreach(BoardSquare square in squares)
             {
                 Paint paint = new Paint();
-                paint.Color = i % 2 == 0 ? Color.White : Color.Black;
-                for (int j = 0; j < 8; j++)
-                {
-                    paint.Color = paint.Color == Color.White ? Color.Black : Color.White;
-                    canvas.DrawRect(j * 100, i * 100, 100 * j + 100, i * 100 + 100, paint);
-                }
+                paint.Color = square.Color;
+                canvas.DrawRect(square.Center[0] - 50, square.Center[1] - 50,
+                    square.Center[0] + 50, square.Center[1] + 50, paint);
             }
             for (int i = 0; i < 12; i++)
             {
@@ -49,22 +54,6 @@ namespace FinalProject
                 if (!white[i].Eaten)
                     white[i].Draw(canvas);
             }
-        }
-
-        BoardSquare[,] GetBoardSquares(int leftTopCornerX, int leftTopCornerY, int rightTopCornerX)
-        {
-            int sideLength = (leftTopCornerX - rightTopCornerX) / 64;
-            BoardSquare[,] squares = new BoardSquare[8, 8];
-            for (int i = 0; i < NUMBER_OF_SQUARES / 8; i++)
-            {
-                int y = leftTopCornerY + i * sideLength + sideLength / 2;
-                for (int j = 0; j < NUMBER_OF_SQUARES / 8; j++)
-                {
-                    int x = leftTopCornerX + j * sideLength + sideLength / 2;
-                    squares[j, i] = new BoardSquare(x, y, null);
-                }
-            }
-            return squares;
         }
 
         public void Move(BoardSquare source, BoardSquare destinaiton, Canvas canvas)
@@ -86,7 +75,7 @@ namespace FinalProject
             List<BoardSquare> possibles = clicked.CurrentPiece.GetPossiblePlaces(squares);
             foreach (BoardSquare square in possibles)
             {
-                square.
+                square.Color = Color.Gray;
             }
         }
     }
