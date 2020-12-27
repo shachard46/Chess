@@ -8,7 +8,7 @@ namespace FinalProject.Pieces
 {
     public class Rook : Piece, CastledPiece
     {
-        public Rook(float x, float y, Bitmap bitmap, bool side, bool eaten) : base(x, y, bitmap, side, eaten)
+        public Rook(float[] cords, int res, side side) : base(cords, res, side)
         {
         }
 
@@ -20,8 +20,8 @@ namespace FinalProject.Pieces
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
             List<BoardSquare> possibilities = new List<BoardSquare>();
-            int x = GetBoardSquare(squares)[0],
-                y = GetBoardSquare(squares)[1];
+            int x = GetBoardSquareCords(squares)[0],
+                y = GetBoardSquareCords(squares)[1];
             checkBlocks(x, squares.GetLength(0) - 1, squares, possibilities);
             checkBlocks(squares.GetLength(1), y, squares, possibilities);
             //for (int i = 0; i < squares.GetLength(0); i++)

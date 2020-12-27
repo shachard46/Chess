@@ -6,15 +6,15 @@ namespace FinalProject.Pieces
 {
     public class Pawn : Piece
     {
-        public Pawn(float x, float y, Bitmap bitmap, bool side, bool eaten) : base(x, y, bitmap, side, eaten)
+        public Pawn(float[] cords, int res, side side) : base(cords, res, side)
         {
         }
 
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
             List<BoardSquare> possibilities = new List<BoardSquare>();
-            int x = GetBoardSquare(squares)[0],
-                y = GetBoardSquare(squares)[1];
+            int x = GetBoardSquareCords(squares)[0],
+                y = GetBoardSquareCords(squares)[1];
             for (int i = -1; i <= 1; i++)
             {
                 switch (i)

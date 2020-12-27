@@ -1,2 +1,3 @@
-./FinalProject/bin
-./FinalProject/obj
+/FinalProject/bin
+/FinalProject/obj
+/.vs

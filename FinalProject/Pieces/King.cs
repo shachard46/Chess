@@ -4,9 +4,9 @@ using Android.Graphics;
 
 namespace FinalProject.Pieces
 {
-    public class King : Piece , CastledPiece
+    public class King : Piece, CastledPiece
     {
-        public King(float x, float y, Bitmap bitmap, bool side, bool eaten) : base(x, y, bitmap, side, eaten)
+        public King(float[] cords, int res, side side) : base(cords, res, side)
         {
         }
 
@@ -18,8 +18,8 @@ namespace FinalProject.Pieces
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
             List<BoardSquare> possibilities = new List<BoardSquare>();
-            int x = GetBoardSquare(squares)[0],
-                y = GetBoardSquare(squares)[1];
+            int x = GetBoardSquareCords(squares)[0],
+                y = GetBoardSquareCords(squares)[1];
 
             for (int i = y - 1; i <= y + 1; i++)
             {

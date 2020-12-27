@@ -1,4 +1,5 @@
 ﻿using System;
+using Android.Content.Res;
 using Android.Graphics;
 
 namespace FinalProject
@@ -10,9 +11,9 @@ namespace FinalProject
         int height; 
         int width; 
 
-        public Image(float x, float y, Bitmap image) : base(x, y, Color.White)
+        public Image(float x, float y, int res) : base(x, y, Color.White)
         {
-            this.image = image;
+            this.image = BitmapFactory.DecodeResource(Resources.System, res);
         }
         public override void Draw(Canvas canvas)
         {

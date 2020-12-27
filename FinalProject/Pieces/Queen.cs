@@ -1,17 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Graphics;
 
 namespace FinalProject.Pieces
 {
     public class Queen : Piece
     {
-        public Queen(float x, float y, Bitmap bitmap, bool side, bool eaten) : base(x, y, bitmap, side, eaten)
+        public Queen(float[] cords, int res, side side) : base(cords, res, side)
         {
         }
 
-        public override BoardSquare[,] GetPossiblePlaces(BoardSquare[,] squares)
+        public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

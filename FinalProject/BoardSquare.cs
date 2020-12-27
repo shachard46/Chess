@@ -5,14 +5,19 @@ namespace FinalProject
 {
     public class BoardSquare
     {
-        public BoardSquare(int x, int y, Piece currentPiece)
+        public static Paint possible;
+        public BoardSquare(float x, float y, Piece currentPiece)
         {
-            Center = new int[] { x, y };
+            Center = new float[] { x, y };
             CurrentPiece = currentPiece;
+            possible = new Paint();
+            possible.SetStyle(Paint.Style.Stroke);
+            possible.StrokeWidth = 30;
+            possible.Color = Color.Red;
         }
 
-        public int[] Center { get; set; }
-        public Color Color { get; set; }
+        public float[] Center { get; set; }
+        public Paint Paint { get; set; }
         public int SideLength { get; set; }
         public Piece CurrentPiece { get; set; }
 
@@ -20,6 +25,12 @@ namespace FinalProject
         {
             float x = piece.GetX();
             float y = piece.GetY();
+            bool isInX = Center[0] + SideLength / 2 > x && Center[0] - SideLength / 2 < x;
+            bool isInY = Center[1] + SideLength / 2 > y && Center[1] - SideLength / 2 < y;
+            return isInX && isInY;
+        }
+        public bool IsInArea(float x, float y)
+        {
             bool isInX = Center[0] + SideLength / 2 > x && Center[0] - SideLength / 2 < x;
             bool isInY = Center[1] + SideLength / 2 > y && Center[1] - SideLength / 2 < y;
             return isInX && isInY;

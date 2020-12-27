@@ -6,15 +6,15 @@ namespace FinalProject.Pieces
 {
     public class Bishop : Piece
     {
-        public Bishop(float x, float y, Bitmap bitmap, bool side, bool eaten) : base(x, y, bitmap, side, eaten)
+        public Bishop(float[] cords, int res, side side) : base(cords, res, side)
         {
         }
 
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
             List<BoardSquare> possibilities = new List<BoardSquare>();
-            int x = GetBoardSquare(squares)[0],
-                y = GetBoardSquare(squares)[1];
+            int x = GetBoardSquareCords(squares)[0],
+                y = GetBoardSquareCords(squares)[1];
             int counter = 0;
             for (int i = 0; i < squares.GetLength(1); i++)
             {
