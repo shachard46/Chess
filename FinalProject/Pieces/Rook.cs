@@ -24,40 +24,85 @@ namespace FinalProject.Pieces
             List<BoardSquare> possibilities = new List<BoardSquare>();
             int x = GetBoardSquareCords(squares)[0],
                 y = GetBoardSquareCords(squares)[1];
-            checkBlocks(x, squares.GetLength(0) - 1, squares, possibilities);
-            checkBlocks(squares.GetLength(1), y, squares, possibilities);
-            //for (int i = 0; i < squares.GetLength(0); i++)
-            //{
-            //    if (squares[x, i].CurrentPiece == null)
-            //    {
-            //        possibilities.Add(squares[x, i]);
-            //    }
-            //    else if (squares[x, i].CurrentPiece != null && squares[x, i].CurrentPiece.Side == this.Side)
-            //    {
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        possibilities.Add(squares[x, i]);
-            //        break;
-            //    }
-            //}
-            //for (int i = 0; i < squares.GetLength(1); i++)
-            //{
-            //    if (squares[x, i].CurrentPiece == null)
-            //    {
-            //        possibilities.Add(squares[i, y]);
-            //    }
-            //    else if (squares[i, y].CurrentPiece != null && squares[i, y].CurrentPiece.Side == this.Side)
-            //    {
-            //        break;
-            //    }
-            //    else
-            //    {
-            //        possibilities.Add(squares[i, y]);
-            //        break;
-            //    }
-            //}
+            //checkBlocks(x, squares.GetLength(0) - 1, squares, possibilities);
+            //checkBlocks(squares.GetLength(1), y, squares, possibilities);
+            int plus = y + 1, minus = y - 1;
+            for (int i = 0; i < squares.GetLength(1); i++)
+            {
+                if (plus < squares.GetLength(1))
+                {
+                    if (squares[plus, x].CurrentPiece == null)
+                    {
+                        possibilities.Add(squares[plus, x]);
+                        plus += 1;
+                    }
+                    else if (squares[plus, x].CurrentPiece != null && squares[plus, x].CurrentPiece.Side == this.Side)
+                    {
+                        plus = squares.GetLength(1);
+                    }
+                    else
+                    {
+                        possibilities.Add(squares[plus, x]);
+                        plus = squares.GetLength(1);
+                    }
+                }
+                if (minus >= 0)
+                {
+                    if (squares[minus, x].CurrentPiece == null)
+                    {
+                        possibilities.Add(squares[minus, x]);
+                        minus -= 1;
+                    }
+                    else if (squares[minus, x].CurrentPiece != null && squares[minus, x].CurrentPiece.Side == this.Side)
+                    {
+                        minus = -1;
+                    }
+                    else
+                    {
+                        possibilities.Add(squares[minus, x]);
+                        minus = -1;
+                    }
+                }
+            }
+            plus = x + 1;
+            minus = x - 1;
+            for (int i = 0; i < squares.GetLength(0); i++)
+            {
+                if (plus < squares.GetLength(0))
+                {
+                    if (squares[y, plus].CurrentPiece == null)
+                    {
+                        possibilities.Add(squares[y, plus]);
+                        plus += 1;
+                    }
+                    else if (squares[y, plus].CurrentPiece != null && squares[y, plus].CurrentPiece.Side == this.Side)
+                    {
+                        plus = squares.GetLength(0);
+                    }
+                    else
+                    {
+                        possibilities.Add(squares[i, x]);
+                        plus = squares.GetLength(0);
+                    }
+                }
+                if (minus >= 0)
+                {
+                    if (squares[y, minus].CurrentPiece == null)
+                    {
+                        possibilities.Add(squares[y, minus]);
+                        minus -= 1;
+                    }
+                    else if (squares[y, minus].CurrentPiece != null && squares[y, minus].CurrentPiece.Side == this.Side)
+                    {
+                        minus = -1;
+                    }
+                    else
+                    {
+                        possibilities.Add(squares[y, minus]);
+                        minus = -1;
+                    }
+                }
+            }
             return possibilities;
         }
         private void checkBlocks(int x, int y, BoardSquare[,] squares, List<BoardSquare> possibilities)

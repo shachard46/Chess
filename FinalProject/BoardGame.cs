@@ -92,6 +92,8 @@ namespace FinalProject
                             p.Color = square.CurrentPiece.Side == Piece.side.Black ? Color.Red : Color.Blue;
                         if (square.CurrentPiece is King)
                             p.Color = Color.Brown;
+                        if (square.CurrentPiece is Rook)
+                            p.Color = Color.Green;
                         canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), 30, p);
                     }
                 }
