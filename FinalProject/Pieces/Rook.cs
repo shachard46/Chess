@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using Android.Graphics;
 using Java.Util.Functions;
 using Android.Media;
+using System.Drawing;
 
 namespace FinalProject.Pieces
 {
     public class Rook : Piece, CastledPiece
     {
-        public Rook(float[] cords, int res, side side) : base(cords, res, side)
+        public Rook(float[] cords, side side) : base(cords,
+            side == side.Black ? Resource.Drawable.black_rook : Resource.Drawable.white_rook, side)
         {
         }
 

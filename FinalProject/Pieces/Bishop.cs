@@ -6,7 +6,7 @@ namespace FinalProject.Pieces
 {
     public class Bishop : Piece
     {
-        public Bishop(float[] cords, int res, side side) : base(cords, res, side)
+        public Bishop(float[] cords, side side) : base(cords, side == side.Black ? Resource.Drawable.black_bishop : Resource.Drawable.white_bishop, side)
         {
         }
 
@@ -22,7 +22,7 @@ namespace FinalProject.Pieces
                 {
                     if (Math.Abs(x - j) == Math.Abs(y - i) && counter == 0)
                     {
-                        possibilities.Add(squares[j, i]);
+                        possibilities.Add(squares[i, j]);
                     }
                 }
             }

@@ -1,38 +1,34 @@
 ﻿<Properties StartupConfiguration="{4E45CF06-6EA5-4175-B111-70F4E95E8A97}|Default">
   <MonoDevelop.Ide.ItemProperties.FinalProject AndroidDesignerPreferredTheme="AppTheme" AndroidDesignerPreferredDevice="Nexus 10" PreferredExecutionTarget="Android.nexus_4_lollipop_5_0_api_21" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="../../../../Library/Frameworks/Xamarin.Android.framework/Versions/11.1.0.17/lib/xamarin.android/xbuild/Xamarin/Android/Xamarin.Android.Aapt2.targets">
+  <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Pieces/Rook.cs">
     <Files>
-      <File FileName="FinalProject/Pieces/Pawn.cs" Line="9" Column="26" />
-      <File FileName="FinalProject/Pieces/Bishop.cs" Line="9" Column="28" />
-      <File FileName="FinalProject/Pieces/Knight.cs" Line="9" Column="28" />
-      <File FileName="FinalProject/Pieces/Queen.cs" Line="9" Column="27" />
-      <File FileName="FinalProject/Pieces/Rook.cs" Line="11" Column="26" />
-      <File FileName="FinalProject/MainActivity.cs" Line="1" Column="1" />
-      <File FileName="FinalProject/CheckersPiece.cs" />
-      <File FileName="FinalProject/Shape.cs" Line="1" Column="1" />
-      <File FileName="../school/SpiritBall/SpiritBall/BoardGame.cs" />
-      <File FileName="FinalProject/Resources/layout/homescreen.xml" />
-      <File FileName="FinalProject/Pieces/King.cs" Line="9" Column="26" />
-      <File FileName="FinalProject/Piece.cs" Line="16" Column="27" />
-      <File FileName="FinalProject/Image.cs" Line="16" Column="78" />
-      <File FileName="FinalProject/ChessBoardGame.cs" Line="62" Column="94" />
-      <File FileName="FinalProject/BoardSquare.cs" />
-      <File FileName="../../../../Library/Frameworks/Mono.framework/External/xbuild/Xamarin/Android/Xamarin.Android.Aapt2.targets" Line="164" Column="3" />
-      <File FileName="FinalProject/Resources/values/styles.xml" Line="2" Column="1" />
+      <File FileName="FinalProject/Pieces/Pawn.cs" Line="18" Column="57" />
+      <File FileName="FinalProject/Piece.cs" Line="39" Column="14" />
+      <File FileName="FinalProject/Image.cs" Line="22" Column="76" />
+      <File FileName="FinalProject/ChessBoardGame.cs" Line="157" Column="1" />
+      <File FileName="FinalProject/BoardSquare.cs" Line="16" Column="37" />
+      <File FileName="FinalProject/Pieces/King.cs" Line="28" Column="65" />
+      <File FileName="FinalProject/Pieces/Rook.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="FinalProject" expanded="True">
             <Node name="FinalProject" expanded="True">
-              <Node name="Pieces" expanded="True" />
+              <Node name="Pieces" expanded="True">
+                <Node name="Rook.cs" selected="True" />
+              </Node>
               <Node name="Resources" expanded="True">
-                <Node name="values" expanded="True">
-                  <Node name="styles.xml" selected="True" />
-                </Node>
+                <Node name="drawable" expanded="True" />
+                <Node name="values" expanded="True" />
               </Node>
             </Node>
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>state</Value>
         </State>
       </Pad>
     </Pads>

@@ -1,6 +1,7 @@
 ﻿using System;
 using Android.Graphics;
 
+
 namespace FinalProject
 {
     public class BoardSquare
@@ -12,12 +13,12 @@ namespace FinalProject
             CurrentPiece = currentPiece;
             possible = new Paint();
             possible.SetStyle(Paint.Style.Stroke);
-            possible.StrokeWidth = 30;
+            possible.StrokeWidth = 4;
             possible.Color = Color.Red;
         }
 
         public float[] Center { get; set; }
-        public Paint Paint { get; set; }
+        public Paint Paint { get; set; } = new Paint();
         public int SideLength { get; set; }
         public Piece CurrentPiece { get; set; }
 

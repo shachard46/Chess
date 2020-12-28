@@ -9,12 +9,13 @@ namespace FinalProject
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
+        private BoardGame chessBoardGame;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             // Set our view from the "main" layout resource
-            ChessBoardGame chessBoardGame = new ChessBoardGame(this);
+            BoardGame chessBoardGame = new BoardGame(this);
             SetContentView(chessBoardGame);
         }
 

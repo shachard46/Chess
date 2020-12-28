@@ -65,7 +65,7 @@
     <Compile Include="Piece.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Shape.cs" />
-    <Compile Include="ChessBoardGame.cs" />
+    <Compile Include="BoardGame.cs" />
     <Compile Include="BoardSquare.cs" />
     <Compile Include="Pieces\King.cs" />
     <Compile Include="Pieces\Queen.cs" />

@@ -43,7 +43,7 @@ namespace FinalProject
                     {
                         x = j;
                         y = i;
-                        break;
+                        return new int[] { x, y };
                     }
                 }
             }
@@ -51,7 +51,7 @@ namespace FinalProject
         }
         public BoardSquare GetBoardSquare(BoardSquare[,] squares)
         {
-            return squares[GetBoardSquareCords(squares)[0], GetBoardSquareCords(squares)[1]];
+            return squares[GetBoardSquareCords(squares)[1], GetBoardSquareCords(squares)[0]];
         }
 
     }
