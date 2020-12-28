@@ -6,7 +6,7 @@ namespace FinalProject.Pieces
 {
     public class Pawn : Piece
     {
-        public Pawn(float[] cords, int res, side side) : base(cords, res, side)
+        public Pawn(float[] cords, side side) : base(cords, side == side.Black ? Resource.Drawable.black_pawn : Resource.Drawable.white_pawn, side)
         {
         }
 
@@ -15,6 +15,7 @@ namespace FinalProject.Pieces
             List<BoardSquare> possibilities = new List<BoardSquare>();
             int x = GetBoardSquareCords(squares)[0],
                 y = GetBoardSquareCords(squares)[1];
+            int direction = Side == side.White ? -1 : 1;
             for (int i = -1; i <= 1; i++)
             {
                 switch (i)
@@ -22,15 +23,19 @@ namespace FinalProject.Pieces
 
                     case -1:
                     case 1:
-                        if (squares[x + i, y + 1].CurrentPiece != null && squares[x + i, y + 1].CurrentPiece.Side != this.Side)
+                        if (!(x == squares.GetLength(0) - 1 && i > 0) && !(x == 0 && i < 0))
                         {
-                            possibilities.Add(squares[x + i, y + 1]);
+                            if (squares[y + direction, x + i].CurrentPiece != null
+                                && squares[y + direction, x + i].CurrentPiece.Side != this.Side)
+                            {
+                                possibilities.Add(squares[y + direction, x + i]);
+                            }
                         }
                         break;
                     case 0:
-                        if(squares[x + i, y + 1].CurrentPiece != null)
+                        if (squares[y + direction, x + i].CurrentPiece == null)
                         {
-                            possibilities.Add(squares[x, y + 1]);
+                            possibilities.Add(squares[y + direction, x]);
                         }
                         break;
                 }

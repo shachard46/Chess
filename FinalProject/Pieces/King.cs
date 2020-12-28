@@ -6,7 +6,7 @@ namespace FinalProject.Pieces
 {
     public class King : Piece, CastledPiece
     {
-        public King(float[] cords, int res, side side) : base(cords, res, side)
+        public King(float[] cords, side side) : base(cords, side == side.Black ? Resource.Drawable.black_king : Resource.Drawable.white_king, side)
         {
         }
 
@@ -25,16 +25,22 @@ namespace FinalProject.Pieces
             {
                 for (int j = x - 1; j <= x + 1; j++)
                 {
-                    if (squares[j, i].CurrentPiece == null && squares[j, i].CurrentPiece.Side != this.Side)
+                    if (!(x == squares.GetLength(0) - 1 && j > x)
+                        && !(x == 0 && j < x)
+                        && !(y == squares.GetLength(1) - 1 && i > y)
+                        && !(y == 0 && i < y))
                     {
-                        possibilities.Add(squares[j, i]);
+                        if (squares[i, j].CurrentPiece == null || squares[i, j].CurrentPiece.Side != this.Side)
+                        {
+                            possibilities.Add(squares[i, j]);
+                        }
                     }
                 }
             }
-            if (CanCastle())
-            {
-                // hatsracha
-            }
+            //if (CanCastle())
+            //{
+            //    // hatsracha
+            //}
             return possibilities;
         }
     }
