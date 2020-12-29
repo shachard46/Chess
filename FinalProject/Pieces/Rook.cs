@@ -7,17 +7,14 @@ using System.Drawing;
 
 namespace FinalProject.Pieces
 {
-    public class Rook : Piece, CastledPiece
+    public class Rook : Piece//, CastledPiece
     {
         public Rook(float[] cords, side side) : base(cords,
             side == side.Black ? Resource.Drawable.black_rook : Resource.Drawable.white_rook, side)
         {
         }
 
-        public bool CanCastle()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {

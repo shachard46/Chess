@@ -4,13 +4,13 @@ using Android.Graphics;
 
 namespace FinalProject.Pieces
 {
-    public class King : Piece, CastledPiece
+    public class King : Piece//, CastledPiece
     {
         public King(float[] cords, side side) : base(cords, side == side.Black ? Resource.Drawable.black_king : Resource.Drawable.white_king, side)
         {
         }
 
-        public bool CanCastle()
+        public int CanCastle(BoardGame bigCasle, BoardGame smallCastle)
         {
             throw new NotImplementedException();
         }

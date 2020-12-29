@@ -1,8 +1,11 @@
 ﻿using System;
+using FinalProject.Pieces;
+
 namespace FinalProject
 {
     public interface CastledPiece
     {
-        bool CanCastle();
+        int CanCastle(BoardGame bigCasle, BoardGame smallCastle);
+        int CanCastle();
     }
 }

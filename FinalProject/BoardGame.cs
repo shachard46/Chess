@@ -83,6 +83,11 @@ namespace FinalProject
                     square.Center[1] - Constants.SQUARE_SIDE / 2,
                     square.Center[0] + Constants.SQUARE_SIDE / 2,
                     square.Center[1] + Constants.SQUARE_SIDE / 2, square.Paint);
+                //if (state == GameState.Holding)
+                //    ShowPossibleMoves(played, canvas);
+            }
+            foreach (BoardSquare square in squares)
+            {
                 if (square.CurrentPiece != null && !square.CurrentPiece.Eaten)
                 {
                     //square.CurrentPiece.Draw(canvas);
@@ -99,42 +104,74 @@ namespace FinalProject
                         canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), 30, p);
                     }
                 }
-                if (state == GameState.Holding)
-                    ShowPossibleMoves(played, canvas);
             }
+            using (Paint p = new Paint())
+            {
+                if (played != null && played.CurrentPiece != null)
+                {
+
+                    if (played.CurrentPiece is Pawn)
+                        p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Red : Color.Blue;
+                    if (played.CurrentPiece is King)
+                        p.Color = Color.Brown;
+                    if (played.CurrentPiece is Rook)
+                        p.Color = Color.Green;
+                    if (played.CurrentPiece is Bishop)
+                        p.Color = Color.Cyan;
+                    canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), 30, p);
+                }
+            }
+
+
+            //Invalidate();
         }
 
         public override bool OnTouchEvent(MotionEvent e)
         {
-            switch (state)
+            if (state == GameState.Idle)
             {
-                case GameState.Idle:
-                    played = GetSquareByCords(e.GetX(), e.GetY());
-                    if (played != null && played.CurrentPiece != null)
-                    {
-                        if ((int)played.CurrentPiece.Side != (int)turn)
-                            played = null;
-                    }
-                    if (played != null && played.CurrentPiece != null)
-                    {
-                        state = GameState.Holding;
-                        Invalidate();
-                    }
-                    break;
-                case GameState.Holding:
+                played = GetSquareByCords(e.GetX(), e.GetY());
+                if (played != null && played.CurrentPiece != null)
+                {
+                    if ((int)played.CurrentPiece.Side != (int)turn)
+                        played = null;
+                }
+                if (played != null && played.CurrentPiece != null)
+                {
+                    state = GameState.Holding;
+                    Invalidate();
+                }
+            }
+            if (state == GameState.Holding)
+            {
+                if (e.Action == MotionEventActions.Down)
+                {
+                    played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
+                }
+                else if (e.Action == MotionEventActions.Move)
+                {
+                    played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
+                }
+                else if (e.Action == MotionEventActions.Up)
+                {
                     if (Move(played, GetSquareByCords(e.GetX(), e.GetY())))
                     {
                         turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
                         state = GameState.Idle;
-                        Invalidate();
                     }
-                    break;
+                    else
+                    {
+                        played.CurrentPiece.SetCords(played.Center);
+                    }
+                }
+                Invalidate();
             }
-            return base.OnTouchEvent(e);
+            return true;
         }
 
         public bool Move(BoardSquare source, BoardSquare destinaiton)
         {
+            source.CurrentPiece.SetCords(source.Center);
             if (source.CurrentPiece.GetPossiblePlaces(squares).Contains(destinaiton))
             {
                 source.CurrentPiece.SetCords(destinaiton.Center);
