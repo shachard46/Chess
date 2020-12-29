@@ -3,12 +3,13 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Pieces/Rook.cs">
     <Files>
       <File FileName="FinalProject/Pieces/Pawn.cs" Line="18" Column="57" />
-      <File FileName="FinalProject/Piece.cs" Line="39" Column="14" />
+      <File FileName="FinalProject/Piece.cs" Line="38" Column="7" />
       <File FileName="FinalProject/Image.cs" Line="22" Column="76" />
-      <File FileName="FinalProject/ChessBoardGame.cs" Line="157" Column="1" />
+      <File FileName="FinalProject/ChessBoardGame.cs" Line="96" Column="50" />
       <File FileName="FinalProject/BoardSquare.cs" Line="16" Column="37" />
       <File FileName="FinalProject/Pieces/King.cs" Line="28" Column="65" />
-      <File FileName="FinalProject/Pieces/Rook.cs" Line="25" Column="1" />
+      <File FileName="FinalProject/Pieces/Rook.cs" Line="39" Column="42" />
+      <File FileName="FinalProject/Pieces/Bishop.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

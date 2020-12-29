@@ -24,108 +24,50 @@ namespace FinalProject.Pieces
             List<BoardSquare> possibilities = new List<BoardSquare>();
             int x = GetBoardSquareCords(squares)[0],
                 y = GetBoardSquareCords(squares)[1];
-            //checkBlocks(x, squares.GetLength(0) - 1, squares, possibilities);
-            //checkBlocks(squares.GetLength(1), y, squares, possibilities);
-            int plus = y + 1, minus = y - 1;
+            bool plusx = true, minusx = true, plusy = true, minusy = true;
             for (int i = 0; i < squares.GetLength(1); i++)
             {
-                if (plus < squares.GetLength(1))
+                if (plusx)
                 {
-                    if (squares[plus, x].CurrentPiece == null)
-                    {
-                        possibilities.Add(squares[plus, x]);
-                        plus += 1;
-                    }
-                    else if (squares[plus, x].CurrentPiece != null && squares[plus, x].CurrentPiece.Side == this.Side)
-                    {
-                        plus = squares.GetLength(1);
-                    }
-                    else
-                    {
-                        possibilities.Add(squares[plus, x]);
-                        plus = squares.GetLength(1);
-                    }
+                    plusx = CheckIfPossible(x + i + 1, y, x + i + 1 < squares.GetLength(0), squares, possibilities);
                 }
-                if (minus >= 0)
+
+                if (minusx)
                 {
-                    if (squares[minus, x].CurrentPiece == null)
-                    {
-                        possibilities.Add(squares[minus, x]);
-                        minus -= 1;
-                    }
-                    else if (squares[minus, x].CurrentPiece != null && squares[minus, x].CurrentPiece.Side == this.Side)
-                    {
-                        minus = -1;
-                    }
-                    else
-                    {
-                        possibilities.Add(squares[minus, x]);
-                        minus = -1;
-                    }
+                    minusx = CheckIfPossible(x - i - 1, y, x - i - 1 >= 0, squares, possibilities);
                 }
-            }
-            plus = x + 1;
-            minus = x - 1;
-            for (int i = 0; i < squares.GetLength(0); i++)
-            {
-                if (plus < squares.GetLength(0))
+                if (plusy)
                 {
-                    if (squares[y, plus].CurrentPiece == null)
-                    {
-                        possibilities.Add(squares[y, plus]);
-                        plus += 1;
-                    }
-                    else if (squares[y, plus].CurrentPiece != null && squares[y, plus].CurrentPiece.Side == this.Side)
-                    {
-                        plus = squares.GetLength(0);
-                    }
-                    else
-                    {
-                        possibilities.Add(squares[i, x]);
-                        plus = squares.GetLength(0);
-                    }
+                    plusy = CheckIfPossible(x, y + i + 1, y + i + 1 < squares.GetLength(1), squares, possibilities);
                 }
-                if (minus >= 0)
+
+                if (minusy)
                 {
-                    if (squares[y, minus].CurrentPiece == null)
-                    {
-                        possibilities.Add(squares[y, minus]);
-                        minus -= 1;
-                    }
-                    else if (squares[y, minus].CurrentPiece != null && squares[y, minus].CurrentPiece.Side == this.Side)
-                    {
-                        minus = -1;
-                    }
-                    else
-                    {
-                        possibilities.Add(squares[y, minus]);
-                        minus = -1;
-                    }
+                    minusy = CheckIfPossible(x, y - i - 1, y - i - 1 >= 0, squares, possibilities);
                 }
             }
             return possibilities;
         }
-        private void checkBlocks(int x, int y, BoardSquare[,] squares, List<BoardSquare> possibilities)
+        private bool CheckIfPossible(int x, int y, bool limit, BoardSquare[,] squares, List<BoardSquare> possibilities)
         {
-            for (int i = x; i < squares.GetLength(1); i++)
+            if (limit)
             {
-                for (int j = y; j < squares.GetLength(0); j++)
+                if (squares[y, x].CurrentPiece == null)
                 {
-                    if (squares[i, j].CurrentPiece == null)
-                    {
-                        possibilities.Add(squares[i, j]);
-                    }
-                    else if (squares[i, j].CurrentPiece != null && squares[i, j].CurrentPiece.Side == this.Side)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        possibilities.Add(squares[i, j]);
-                        break;
-                    }
+                    possibilities.Add(squares[y, x]);
+                    return true;
+                }
+                else if (squares[y, x].CurrentPiece != null && squares[y, x].CurrentPiece.Side == this.Side)
+                {
+                    return false;
+                }
+                else
+                {
+                    possibilities.Add(squares[y, x]);
+                    return false;
                 }
             }
+            return false;
         }
     }
 }

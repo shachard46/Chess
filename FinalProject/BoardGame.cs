@@ -94,6 +94,8 @@ namespace FinalProject
                             p.Color = Color.Brown;
                         if (square.CurrentPiece is Rook)
                             p.Color = Color.Green;
+                        if (square.CurrentPiece is Bishop)
+                            p.Color = Color.Cyan;
                         canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), 30, p);
                     }
                 }
