@@ -12,7 +12,25 @@ namespace FinalProject.Pieces
 
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
-            throw new NotImplementedException();
+            List<BoardSquare> possibilities = new List<BoardSquare>();
+            int x = GetBoardSquareCords(squares)[0],
+                y = GetBoardSquareCords(squares)[1];
+            for (int i = -1; i < 2; i+=2)
+            {
+                for (int j = -1; j < 2; j += 2)
+                {
+                    int a = x + 2 * j;
+                    int b = y + i;
+                    CheckIfPossible(a, b, a < squares.GetLength(0) && a >= 0 && b < squares.GetLength(1) && b >= 0, squares, possibilities);
+                }
+                for (int j = -1; j < 2; j += 2)
+                {
+                    int a = x + i;
+                    int b = y + 2 * j;
+                    CheckIfPossible(a, b, a < squares.GetLength(0) && a >= 0 && b < squares.GetLength(1) && b >= 0, squares, possibilities);
+                }
+            }
+            return possibilities;
         }
     }
 }
