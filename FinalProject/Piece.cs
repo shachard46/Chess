@@ -54,5 +54,26 @@ namespace FinalProject
             return squares[GetBoardSquareCords(squares)[1], GetBoardSquareCords(squares)[0]];
         }
 
+        protected bool CheckIfPossible(int x, int y, bool limit, BoardSquare[,] squares, List<BoardSquare> possibilities)
+        {
+            if (limit)
+            {
+                if (squares[y, x].CurrentPiece == null)
+                {
+                    possibilities.Add(squares[y, x]);
+                    return true;
+                }
+                else if (squares[y, x].CurrentPiece != null && squares[y, x].CurrentPiece.Side == this.Side)
+                {
+                    return false;
+                }
+                else
+                {
+                    possibilities.Add(squares[y, x]);
+                    return false;
+                }
+            }
+            return false;
+        }
     }
 }

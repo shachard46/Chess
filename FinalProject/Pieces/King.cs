@@ -25,16 +25,11 @@ namespace FinalProject.Pieces
             {
                 for (int j = x - 1; j <= x + 1; j++)
                 {
-                    if (!(x == squares.GetLength(0) - 1 && j > x)
+                    CheckIfPossible(j, i,
+                        !(x == squares.GetLength(0) - 1 && j > x)
                         && !(x == 0 && j < x)
                         && !(y == squares.GetLength(1) - 1 && i > y)
-                        && !(y == 0 && i < y))
-                    {
-                        if (squares[i, j].CurrentPiece == null || squares[i, j].CurrentPiece.Side != this.Side)
-                        {
-                            possibilities.Add(squares[i, j]);
-                        }
-                    }
+                        && !(y == 0 && i < y), squares, possibilities);
                 }
             }
             //if (CanCastle())
@@ -43,5 +38,6 @@ namespace FinalProject.Pieces
             //}
             return possibilities;
         }
+
     }
 }

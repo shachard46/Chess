@@ -1,15 +1,17 @@
 ﻿<Properties StartupConfiguration="{4E45CF06-6EA5-4175-B111-70F4E95E8A97}|Default">
   <MonoDevelop.Ide.ItemProperties.FinalProject AndroidDesignerPreferredTheme="AppTheme" AndroidDesignerPreferredDevice="Nexus 10" PreferredExecutionTarget="Android.nexus_4_lollipop_5_0_api_21" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Pieces/Rook.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Pieces/Bishop.cs">
     <Files>
       <File FileName="FinalProject/Pieces/Pawn.cs" Line="18" Column="57" />
-      <File FileName="FinalProject/Piece.cs" Line="38" Column="7" />
+      <File FileName="FinalProject/Piece.cs" Line="57" Column="18" />
       <File FileName="FinalProject/Image.cs" Line="22" Column="76" />
-      <File FileName="FinalProject/ChessBoardGame.cs" Line="96" Column="50" />
+      <File FileName="FinalProject/ChessBoardGame.cs" Line="98" Column="49" />
       <File FileName="FinalProject/BoardSquare.cs" Line="16" Column="37" />
-      <File FileName="FinalProject/Pieces/King.cs" Line="28" Column="65" />
-      <File FileName="FinalProject/Pieces/Rook.cs" Line="39" Column="42" />
-      <File FileName="FinalProject/Pieces/Bishop.cs" Line="1" Column="1" />
+      <File FileName="FinalProject/Pieces/King.cs" Line="7" Column="29" />
+      <File FileName="FinalProject/Pieces/Rook.cs" Line="51" Column="1" />
+      <File FileName="FinalProject/Pieces/Bishop.cs" Line="50" Column="9" />
+      <File FileName="FinalProject/Pieces/Queen.cs" Line="1" Column="1" />
+      <File FileName="FinalProject/Pieces/Knight.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,7 +19,7 @@
           <Node name="FinalProject" expanded="True">
             <Node name="FinalProject" expanded="True">
               <Node name="Pieces" expanded="True">
-                <Node name="Rook.cs" selected="True" />
+                <Node name="Bishop.cs" selected="True" />
               </Node>
               <Node name="Resources" expanded="True">
                 <Node name="drawable" expanded="True" />

@@ -41,6 +41,10 @@ namespace FinalProject.Pieces
                 }
 
             }
+            if((y == 1 && Side == side.Black) || (y == 6 && Side == side.White))
+            {
+                possibilities.Add(squares[y + 2 * direction, x]);
+            }
             return possibilities;
         }
     }
