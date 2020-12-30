@@ -83,8 +83,6 @@ namespace FinalProject
                     square.Center[1] - Constants.SQUARE_SIDE / 2,
                     square.Center[0] + Constants.SQUARE_SIDE / 2,
                     square.Center[1] + Constants.SQUARE_SIDE / 2, square.Paint);
-                //if (state == GameState.Holding)
-                //    ShowPossibleMoves(played, canvas);
             }
             foreach (BoardSquare square in squares)
             {
@@ -101,7 +99,7 @@ namespace FinalProject
                             p.Color = Color.Green;
                         if (square.CurrentPiece is Bishop)
                             p.Color = Color.Cyan;
-                        canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), 30, p);
+                        canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
                     }
                 }
             }
@@ -121,9 +119,6 @@ namespace FinalProject
                     canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), 30, p);
                 }
             }
-
-
-            //Invalidate();
         }
 
         public override bool OnTouchEvent(MotionEvent e)
@@ -146,7 +141,14 @@ namespace FinalProject
             {
                 if (e.Action == MotionEventActions.Down)
                 {
-                    played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
+                    if (GetSquareByCords(e.GetX(), e.GetY()).CurrentPiece == null || (int)GetSquareByCords(e.GetX(), e.GetY()).CurrentPiece.Side != (int)turn)
+                    {
+                        played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
+                    }
+                    else
+                    {
+                        played = GetSquareByCords(e.GetX(), e.GetY());
+                    }
                 }
                 else if (e.Action == MotionEventActions.Move)
                 {
@@ -190,24 +192,6 @@ namespace FinalProject
             return false;
         }
 
-        public void ShowPossibleMoves(BoardSquare clicked, Canvas canvas)
-        {
-            if (clicked.CurrentPiece != null && (int)clicked.CurrentPiece.Side == (int)turn)
-            {
-                List<BoardSquare> possibles = clicked.CurrentPiece.GetPossiblePlaces(squares);
-                foreach (BoardSquare square in possibles)
-                {
-                    float stroke = BoardSquare.possible.StrokeWidth;
-                    canvas.DrawRect(
-                        square.Center[0] - Constants.SQUARE_SIDE / 2,
-                        square.Center[1] - Constants.SQUARE_SIDE / 2,
-                        square.Center[0] + Constants.SQUARE_SIDE / 2,
-                        square.Center[1] + Constants.SQUARE_SIDE / 2,
-                        BoardSquare.possible);
-                }
-                Invalidate();
-            }
-        }
         public BoardSquare GetSquareByCords(float x, float y)
         {
             foreach (BoardSquare square in squares)

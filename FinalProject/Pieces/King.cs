@@ -4,15 +4,28 @@ using Android.Graphics;
 
 namespace FinalProject.Pieces
 {
-    public class King : Piece//, CastledPiece
+    public class King : Piece, CastledPiece
     {
+        private bool hasMoved;
         public King(float[] cords, side side) : base(cords, side == side.Black ? Resource.Drawable.black_king : Resource.Drawable.white_king, side)
         {
+            hasMoved = false;
         }
 
-        public int CanCastle(BoardGame bigCasle, BoardGame smallCastle)
+        public int CanCastle(BoardSquare[,] squares)
         {
-            throw new NotImplementedException();
+            return 0;
+            //if (hasMoved)
+            //{
+            //    return 0;
+            //}
+            //foreach(BoardSquare square in squares)
+            //{
+            //    if(square.CurrentPiece != null && square.CurrentPiece is CastledPiece && square.CurrentPiece.Side == Side)
+            //    {
+
+            //    }
+            //}
         }
 
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
@@ -39,5 +52,9 @@ namespace FinalProject.Pieces
             return possibilities;
         }
 
+        public void HasMoved(bool moved)
+        {
+            hasMoved = moved;
+        }
     }
 }
