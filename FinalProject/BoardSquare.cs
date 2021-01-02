@@ -36,5 +36,10 @@ namespace FinalProject
             bool isInY = Center[1] + SideLength / 2 > y && Center[1] - SideLength / 2 < y;
             return isInX && isInY;
         }
+
+        internal object FindYourKing(Piece.side side1, Piece.side side2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

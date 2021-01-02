@@ -16,10 +16,12 @@ namespace FinalProject
 
         public Image(float x, float y, int res) : base(x, y, Color.White)
         {
-            image = BitmapFactory.DecodeResource(View.Resources, res);
-            image = image.Copy(Bitmap.Config.Argb8888, true);
-            float ratio = image.Width / image.Height;
-            image = Bitmap.CreateScaledBitmap(image, (int)(200 * ratio), 200, false);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.InMutable = true;
+            options.InScaled = true;
+            options.InDensity = 1000;
+            options.InTargetDensity = 200;
+            image = BitmapFactory.DecodeResource(View.Resources, res,options);
         }
         public override void Draw(Canvas canvas)
         {

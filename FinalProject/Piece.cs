@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Widget;
+using FinalProject.Pieces;
 
 namespace FinalProject
 {
@@ -54,17 +55,38 @@ namespace FinalProject
             return squares[GetBoardSquareCords(squares)[1], GetBoardSquareCords(squares)[0]];
         }
 
-        protected bool CheckIfPossible(int x, int y, bool limit, BoardSquare[,] squares, List<BoardSquare> possibilities)
+        protected bool CheckIfPossible(int x, int y, bool limit,King king, BoardSquare[,] squares, List<BoardSquare> possibilities)
         {
             if (limit)
             {
                 if (squares[y, x].CurrentPiece == null)
                 {
+                    if (king.IsOnCheck(squares))
+                    {
+                        squares[y, x].CurrentPiece = GetBoardSquare(squares).CurrentPiece;
+                        if (!king.IsOnCheck(squares))
+                        {
+                            possibilities.Add(squares[y, x]);
+                            squares[y, x].CurrentPiece = null;
+                            return true;
+                        }
+                    }
                     possibilities.Add(squares[y, x]);
                     return true;
                 }
                 else if (squares[y, x].CurrentPiece != null && squares[y, x].CurrentPiece.Side == this.Side)
                 {
+                    if (king.IsOnCheck(squares))
+                    {
+                        var c = squares[y, x].CurrentPiece;
+                        squares[y, x].CurrentPiece = GetBoardSquare(squares).CurrentPiece;
+                        if (!king.IsOnCheck(squares))
+                        {
+                            possibilities.Add(squares[y, x]);
+                            squares[y, x].CurrentPiece = c;
+                            return false;
+                        }
+                    }
                     return false;
                 }
                 else
@@ -72,6 +94,7 @@ namespace FinalProject
                     possibilities.Add(squares[y, x]);
                     return false;
                 }
+
             }
             return false;
         }
