@@ -103,20 +103,26 @@ namespace FinalProject
                     }
                 }
             }
+
+            //{
+
+            //}
             using (Paint p = new Paint())
             {
-                if (played != null && played.CurrentPiece != null)
                 {
-
-                    if (played.CurrentPiece is Pawn)
-                        p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Red : Color.Blue;
-                    if (played.CurrentPiece is King)
-                        p.Color = Color.Brown;
-                    if (played.CurrentPiece is Rook)
-                        p.Color = Color.Green;
-                    if (played.CurrentPiece is Bishop)
-                        p.Color = Color.Cyan;
-                    canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), 30, p);
+                    if (played != null && played.CurrentPiece != null)
+                    {
+                        //played.CurrentPiece.Draw(canvas);
+                        if (played.CurrentPiece is Pawn)
+                            p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Red : Color.Blue;
+                        if (played.CurrentPiece is King)
+                            p.Color = Color.Brown;
+                        if (played.CurrentPiece is Rook)
+                            p.Color = Color.Green;
+                        if (played.CurrentPiece is Bishop)
+                            p.Color = Color.Cyan;
+                        canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), 30, p);
+                    }
                 }
             }
         }
@@ -141,13 +147,21 @@ namespace FinalProject
             {
                 if (e.Action == MotionEventActions.Down)
                 {
-                    if (GetSquareByCords(e.GetX(), e.GetY()).CurrentPiece == null || (int)GetSquareByCords(e.GetX(), e.GetY()).CurrentPiece.Side != (int)turn)
+                    BoardSquare clicked = GetSquareByCords(e.GetX(), e.GetY());
+                    if (clicked.CurrentPiece == null || (int)clicked.CurrentPiece.Side != (int)turn)
                     {
                         played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
                     }
                     else
                     {
-                        played = GetSquareByCords(e.GetX(), e.GetY());
+                        if (played.CurrentPiece is King && clicked.CurrentPiece is Rook && clicked.CurrentPiece.Side == played.CurrentPiece.Side)
+                        {
+
+                        }
+                        else
+                        {
+                            played = GetSquareByCords(e.GetX(), e.GetY());
+                        }
                     }
                 }
                 else if (e.Action == MotionEventActions.Move)
@@ -156,7 +170,21 @@ namespace FinalProject
                 }
                 else if (e.Action == MotionEventActions.Up)
                 {
-                    if (Move(played, GetSquareByCords(e.GetX(), e.GetY())))
+                    var clicked = GetSquareByCords(e.GetX(), e.GetY());
+                    if (played.CurrentPiece is King && clicked.CurrentPiece is Rook && clicked.CurrentPiece.Side == played.CurrentPiece.Side)
+                    {
+                        if (((CastledPiece)(played.CurrentPiece)).CanCastle(squares)
+                                && ((CastledPiece)(clicked.CurrentPiece)).CanCastle(squares))
+                        {
+                            if (Math.Abs(played.Center[0] - clicked.Center[0]) > 2 * Constants.SQUARE_SIDE)
+                            {
+                                Castle(played, clicked);
+                                turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
+                                state = GameState.Idle;
+                            }
+                        }
+                    }
+                    else if (Move(played, clicked))
                     {
                         turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
                         state = GameState.Idle;
@@ -183,6 +211,10 @@ namespace FinalProject
                 }
                 destinaiton.CurrentPiece = source.CurrentPiece;
                 source.CurrentPiece = null;
+                if (destinaiton.CurrentPiece is CastledPiece)
+                {
+                    ((CastledPiece)destinaiton.CurrentPiece).HasMoved(true);
+                }
                 return true;
             }
             else if (destinaiton.CurrentPiece != null && destinaiton.CurrentPiece.Side.Equals(source.CurrentPiece.Side))
@@ -191,7 +223,20 @@ namespace FinalProject
             }
             return false;
         }
-
+        public void Castle(BoardSquare king, BoardSquare rook)
+        {
+            int direction = king.Center[0] > rook.Center[0] ? -1 : 1;
+            BoardSquare kingDest = GetSquareByCords(king.Center[0] +
+                direction  * Math.Abs(king.Center[0] - rook.Center[0] + direction * Constants.SQUARE_SIDE), king.Center[1]);
+            BoardSquare rookDest = GetSquareByCords(rook.Center[0]
+                - direction * 2 * Constants.SQUARE_SIDE, rook.Center[1]);
+            king.CurrentPiece.SetCords(kingDest.Center);
+            kingDest.CurrentPiece = king.CurrentPiece;
+            king.CurrentPiece = null;
+            rook.CurrentPiece.SetCords(rookDest.Center);
+            rookDest.CurrentPiece = rook.CurrentPiece;
+            rook.CurrentPiece = null;
+        }
         public BoardSquare GetSquareByCords(float x, float y)
         {
             foreach (BoardSquare square in squares)

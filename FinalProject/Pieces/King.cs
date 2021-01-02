@@ -11,21 +11,41 @@ namespace FinalProject.Pieces
         {
             hasMoved = false;
         }
-
-        public int CanCastle(BoardSquare[,] squares)
+        public bool IsOnCheck(BoardSquare[,] squares)
         {
-            return 0;
-            //if (hasMoved)
-            //{
-            //    return 0;
-            //}
-            //foreach(BoardSquare square in squares)
-            //{
-            //    if(square.CurrentPiece != null && square.CurrentPiece is CastledPiece && square.CurrentPiece.Side == Side)
-            //    {
-
-            //    }
-            //}
+            foreach(BoardSquare square in squares)
+            {
+                if(square.CurrentPiece != null)
+                {
+                    if (square.CurrentPiece.GetPossiblePlaces(squares).Contains(GetBoardSquare(squares)))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool CanCastle(BoardSquare[,] squares)
+        {
+            int x = GetBoardSquareCords(squares)[0],
+                y = GetBoardSquareCords(squares)[1];
+            bool can1 = true, can2 = true;
+            for (int i = 1; i < 4; i++)
+            {
+                if (x + i < 7 && squares[y, x + i].CurrentPiece != null)
+                {
+                    can1 = false;
+                }
+                if(x - i > 0 && squares[y, x - i].CurrentPiece != null)
+                {
+                    can2 = false;
+                }
+                if(!can1 && !can2)
+                {
+                    return false;
+                }
+            }
+            return (can1 || can2) && !hasMoved;
         }
 
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
@@ -45,10 +65,6 @@ namespace FinalProject.Pieces
                         && !(y == 0 && i < y), squares, possibilities);
                 }
             }
-            //if (CanCastle())
-            //{
-            //    // hatsracha
-            //}
             return possibilities;
         }
 

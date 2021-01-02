@@ -17,7 +17,7 @@ namespace FinalProject.Pieces
 
         public bool CanCastle(BoardSquare[,] squares)
         {
-            return !hasMovedl
+            return !hasMoved;
         }
 
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
