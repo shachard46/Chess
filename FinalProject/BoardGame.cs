@@ -201,6 +201,7 @@ namespace FinalProject
 
         public bool Move(BoardSquare source, BoardSquare destinaiton)
         {
+            GetYourKing(source.CurrentPiece.Side).IsOnCheck(squares);
             source.CurrentPiece.SetCords(source.Center);
             if (source.CurrentPiece.GetPossiblePlaces(squares).Contains(destinaiton))
             {
@@ -244,6 +245,39 @@ namespace FinalProject
                 if (square.IsInArea(x, y))
                 {
                     return square;
+                }
+            }
+            return null;
+        }
+        public int[] GetBoardSquareCords(Piece piece)
+        {
+            int x = 0, y = 0;
+            for (int i = 0; i < squares.GetLength(0); i++)
+            {
+                for (int j = 0; j < squares.GetLength(1); j++)
+                {
+                    if (squares[i, j].IsInArea(piece))
+                    {
+                        x = j;
+                        y = i;
+                        return new int[] { x, y };
+                    }
+                }
+            }
+            return new int[] { x, y };
+        }
+        public BoardSquare GetBoardSquareByPiece(Piece piece)
+        {
+            return squares[GetBoardSquareCords(piece)[1], GetBoardSquareCords(piece)[0]];
+        }
+
+        public King GetYourKing(Piece.side side)
+        {
+            foreach(BoardSquare square in squares)
+            {
+                if(square.CurrentPiece is King && square.CurrentPiece.Side == side)
+                {
+                    return (King)square.CurrentPiece;
                 }
             }
             return null;

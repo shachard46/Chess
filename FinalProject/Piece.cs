@@ -33,65 +33,67 @@ namespace FinalProject
 
         public abstract List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares);
 
-        public int[] GetBoardSquareCords(BoardSquare[,] squares)
-        {
-            int x = 0, y = 0;
-            for (int i = 0; i < squares.GetLength(0); i++)
-            {
-                for (int j = 0; j < squares.GetLength(1); j++)
-                {
-                    if (squares[i, j].IsInArea(this))
-                    {
-                        x = j;
-                        y = i;
-                        return new int[] { x, y };
-                    }
-                }
-            }
-            return new int[] { x, y };
-        }
-        public BoardSquare GetBoardSquare(BoardSquare[,] squares)
-        {
-            return squares[GetBoardSquareCords(squares)[1], GetBoardSquareCords(squares)[0]];
-        }
 
-        protected bool CheckIfPossible(int x, int y, bool limit,King king, BoardSquare[,] squares, List<BoardSquare> possibilities)
+
+        protected bool CheckIfPossible(int x, int y, bool limit, BoardSquare[,] squares, List<BoardSquare> possibilities)
         {
             if (limit)
             {
                 if (squares[y, x].CurrentPiece == null)
                 {
-                    if (king.IsOnCheck(squares))
+                    if (MainActivity.boardGame.GetYourKing(Side).OnCheck)
                     {
-                        squares[y, x].CurrentPiece = GetBoardSquare(squares).CurrentPiece;
-                        if (!king.IsOnCheck(squares))
+                        var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
+                        squares[y, x].CurrentPiece = org.CurrentPiece;
+                        squares[y, x].CurrentPiece.SetCords(squares[y, x].Center);
+                        MainActivity.boardGame.GetYourKing(Side).OnCheck = false;
+                        MainActivity.boardGame.GetYourKing(Side).IsOnCheck(squares);
+                        if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
                         {
-                            possibilities.Add(squares[y, x]);
                             squares[y, x].CurrentPiece = null;
+                            org.CurrentPiece.SetCords(org.Center);
+                            possibilities.Add(squares[y, x]);
                             return true;
                         }
+                        squares[y, x].CurrentPiece = null;
+                        org.CurrentPiece.SetCords(org.Center);
                     }
-                    possibilities.Add(squares[y, x]);
-                    return true;
+                    else
+                    {
+                        possibilities.Add(squares[y, x]);
+                        return true;
+                    }
+                    return false;
                 }
                 else if (squares[y, x].CurrentPiece != null && squares[y, x].CurrentPiece.Side == this.Side)
                 {
-                    if (king.IsOnCheck(squares))
-                    {
-                        var c = squares[y, x].CurrentPiece;
-                        squares[y, x].CurrentPiece = GetBoardSquare(squares).CurrentPiece;
-                        if (!king.IsOnCheck(squares))
-                        {
-                            possibilities.Add(squares[y, x]);
-                            squares[y, x].CurrentPiece = c;
-                            return false;
-                        }
-                    }
                     return false;
                 }
                 else
                 {
-                    possibilities.Add(squares[y, x]);
+                    if (MainActivity.boardGame.GetYourKing(Side).OnCheck)
+                    {
+                        var c = squares[y, x].CurrentPiece;
+                        var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
+                        squares[y, x].CurrentPiece = org.CurrentPiece;
+                        squares[y, x].CurrentPiece.SetCords(squares[y, x].Center);
+                        MainActivity.boardGame.GetYourKing(Side).OnCheck = false;
+                        MainActivity.boardGame.GetYourKing(Side).IsOnCheck(squares);
+                        if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
+                        {
+                            squares[y, x].CurrentPiece = c;
+                            org.CurrentPiece.SetCords(org.Center);
+                            possibilities.Add(squares[y, x]);
+                            return false;
+                        }
+                        squares[y, x].CurrentPiece = c;
+                        org.CurrentPiece.SetCords(org.Center);
+                    }
+                    else
+                    {
+                        possibilities.Add(squares[y, x]);
+                        return false;
+                    }
                     return false;
                 }
 

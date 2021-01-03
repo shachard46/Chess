@@ -1,6 +1,6 @@
 ﻿using System;
 using Android.Graphics;
-
+using FinalProject.Pieces;
 
 namespace FinalProject
 {
@@ -35,11 +35,6 @@ namespace FinalProject
             bool isInX = Center[0] + SideLength / 2 > x && Center[0] - SideLength / 2 < x;
             bool isInY = Center[1] + SideLength / 2 > y && Center[1] - SideLength / 2 < y;
             return isInX && isInY;
-        }
-
-        internal object FindYourKing(Piece.side side1, Piece.side side2)
-        {
-            throw new NotImplementedException();
         }
     }
 }

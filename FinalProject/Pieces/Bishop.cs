@@ -13,8 +13,8 @@ namespace FinalProject.Pieces
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
             List<BoardSquare> possibilities = new List<BoardSquare>();
-            int x = GetBoardSquareCords(squares)[0],
-                y = GetBoardSquareCords(squares)[1];
+            int x = MainActivity.boardGame.GetBoardSquareCords(this)[0],
+                y = MainActivity.boardGame.GetBoardSquareCords(this)[1];
             bool first = true, second = true, third = true, fourth = true;
             for (int i = 0; i < squares.GetLength(1); i++)
             {
