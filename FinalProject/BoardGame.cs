@@ -19,6 +19,9 @@ namespace FinalProject
         }
         private GameState state = GameState.Idle;
         public Turn turn = Turn.White;
+
+        public BoardSquare[,] Squares { get => squares; set => squares = value; }
+
         private enum GameState
         {
             Idle, Holding
@@ -31,44 +34,44 @@ namespace FinalProject
         public BoardGame(Context context) : base(context)
         {
             Image.View = this;
-            squares = new BoardSquare[Constants.R_AND_C, Constants.R_AND_C];
+            Squares = new BoardSquare[Constants.R_AND_C, Constants.R_AND_C];
             for (int i = 0; i < Constants.R_AND_C; i++)
             {
                 Color color = i % 2 == 0 ? Color.White : Color.Black;
                 for (int j = 0; j < Constants.R_AND_C; j++)
                 {
                     color = color == Color.White ? Color.Black : Color.White;
-                    squares[i, j] = new BoardSquare(
+                    Squares[i, j] = new BoardSquare(
                         j * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE / 2,
                         i * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE / 2, null);
-                    squares[i, j].Paint.Color = color;
-                    squares[i, j].SideLength = Constants.SQUARE_SIDE;
+                    Squares[i, j].Paint.Color = color;
+                    Squares[i, j].SideLength = Constants.SQUARE_SIDE;
                 }
             }
             for (int i = 0; i < Constants.R_AND_C; i += 7)
             {
-                squares[i, 0].CurrentPiece = new Rook(squares[i, 0].Center,
+                Squares[i, 0].CurrentPiece = new Rook(Squares[i, 0].Center,
                      i == 0 ? Piece.side.Black : Piece.side.White);
-                squares[i, 1].CurrentPiece = new Knight(squares[i, 1].Center,
+                Squares[i, 1].CurrentPiece = new Knight(Squares[i, 1].Center,
                     i == 0 ? Piece.side.Black : Piece.side.White);
-                squares[i, 2].CurrentPiece = new Bishop(squares[i, 2].Center,
+                Squares[i, 2].CurrentPiece = new Bishop(Squares[i, 2].Center,
                     i == 0 ? Piece.side.Black : Piece.side.White);
-                squares[i, 3].CurrentPiece = new Queen(squares[i, 3].Center,
+                Squares[i, 3].CurrentPiece = new Queen(Squares[i, 3].Center,
                     i == 0 ? Piece.side.Black : Piece.side.White);
-                squares[i, 4].CurrentPiece = new King(squares[i, 4].Center,
+                Squares[i, 4].CurrentPiece = new King(Squares[i, 4].Center,
                     i == 0 ? Piece.side.Black : Piece.side.White);
-                squares[i, 5].CurrentPiece = new Bishop(squares[i, 5].Center,
+                Squares[i, 5].CurrentPiece = new Bishop(Squares[i, 5].Center,
                     i == 0 ? Piece.side.Black : Piece.side.White);
-                squares[i, 6].CurrentPiece = new Knight(squares[i, 6].Center,
+                Squares[i, 6].CurrentPiece = new Knight(Squares[i, 6].Center,
                     i == 0 ? Piece.side.Black : Piece.side.White);
-                squares[i, 7].CurrentPiece = new Rook(squares[i, 7].Center,
+                Squares[i, 7].CurrentPiece = new Rook(Squares[i, 7].Center,
                     i == 0 ? Piece.side.Black : Piece.side.White);
             }
             for (int i = 1; i < Constants.R_AND_C; i += 5)
                 for (int j = 0; j < Constants.R_AND_C; j++)
                 {
                     {
-                        squares[i, j].CurrentPiece = new Pawn(squares[i, j].Center,
+                        Squares[i, j].CurrentPiece = new Pawn(Squares[i, j].Center,
                             i == 1 ? Piece.side.Black : Piece.side.White);
                     }
                 }
@@ -76,7 +79,7 @@ namespace FinalProject
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            foreach (BoardSquare square in squares)
+            foreach (BoardSquare square in Squares)
             {
                 canvas.DrawRect(
                     square.Center[0] - Constants.SQUARE_SIDE / 2,
@@ -84,7 +87,7 @@ namespace FinalProject
                     square.Center[0] + Constants.SQUARE_SIDE / 2,
                     square.Center[1] + Constants.SQUARE_SIDE / 2, square.Paint);
             }
-            foreach (BoardSquare square in squares)
+            foreach (BoardSquare square in Squares)
             {
                 if (square.CurrentPiece != null && !square.CurrentPiece.Eaten)
                 {
@@ -173,8 +176,8 @@ namespace FinalProject
                     var clicked = GetSquareByCords(e.GetX(), e.GetY());
                     if (played.CurrentPiece is King && clicked.CurrentPiece is Rook && clicked.CurrentPiece.Side == played.CurrentPiece.Side)
                     {
-                        if (((CastledPiece)(played.CurrentPiece)).CanCastle(squares)
-                                && ((CastledPiece)(clicked.CurrentPiece)).CanCastle(squares))
+                        if (((CastledPiece)(played.CurrentPiece)).CanCastle(Squares)
+                                && ((CastledPiece)(clicked.CurrentPiece)).CanCastle(Squares))
                         {
                             if (Math.Abs(played.Center[0] - clicked.Center[0]) > 2 * Constants.SQUARE_SIDE)
                             {
@@ -201,9 +204,9 @@ namespace FinalProject
 
         public bool Move(BoardSquare source, BoardSquare destinaiton)
         {
-            GetYourKing(source.CurrentPiece.Side).IsOnCheck(squares);
+            GetYourKing(source.CurrentPiece.Side).IsOnCheck(Squares);
             source.CurrentPiece.SetCords(source.Center);
-            if (source.CurrentPiece.GetPossiblePlaces(squares).Contains(destinaiton))
+            if (source.CurrentPiece.GetPossiblePlaces(Squares).Contains(destinaiton))
             {
                 source.CurrentPiece.SetCords(destinaiton.Center);
                 if (destinaiton.CurrentPiece != null)
@@ -240,7 +243,7 @@ namespace FinalProject
         }
         public BoardSquare GetSquareByCords(float x, float y)
         {
-            foreach (BoardSquare square in squares)
+            foreach (BoardSquare square in Squares)
             {
                 if (square.IsInArea(x, y))
                 {
@@ -252,11 +255,11 @@ namespace FinalProject
         public int[] GetBoardSquareCords(Piece piece)
         {
             int x = 0, y = 0;
-            for (int i = 0; i < squares.GetLength(0); i++)
+            for (int i = 0; i < Squares.GetLength(0); i++)
             {
-                for (int j = 0; j < squares.GetLength(1); j++)
+                for (int j = 0; j < Squares.GetLength(1); j++)
                 {
-                    if (squares[i, j].IsInArea(piece))
+                    if (Squares[i, j].IsInArea(piece))
                     {
                         x = j;
                         y = i;
@@ -268,12 +271,12 @@ namespace FinalProject
         }
         public BoardSquare GetBoardSquareByPiece(Piece piece)
         {
-            return squares[GetBoardSquareCords(piece)[1], GetBoardSquareCords(piece)[0]];
+            return Squares[GetBoardSquareCords(piece)[1], GetBoardSquareCords(piece)[0]];
         }
 
         public King GetYourKing(Piece.side side)
         {
-            foreach(BoardSquare square in squares)
+            foreach(BoardSquare square in Squares)
             {
                 if(square.CurrentPiece is King && square.CurrentPiece.Side == side)
                 {

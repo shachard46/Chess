@@ -41,29 +41,11 @@ namespace FinalProject
             {
                 if (squares[y, x].CurrentPiece == null)
                 {
-                    if (MainActivity.boardGame.GetYourKing(Side).OnCheck)
-                    {
-                        var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
-                        squares[y, x].CurrentPiece = org.CurrentPiece;
-                        squares[y, x].CurrentPiece.SetCords(squares[y, x].Center);
-                        MainActivity.boardGame.GetYourKing(Side).OnCheck = false;
-                        MainActivity.boardGame.GetYourKing(Side).IsOnCheck(squares);
-                        if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
-                        {
-                            squares[y, x].CurrentPiece = null;
-                            org.CurrentPiece.SetCords(org.Center);
-                            possibilities.Add(squares[y, x]);
-                            return true;
-                        }
-                        squares[y, x].CurrentPiece = null;
-                        org.CurrentPiece.SetCords(org.Center);
-                    }
-                    else
+                    if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y, x]))
                     {
                         possibilities.Add(squares[y, x]);
-                        return true;
                     }
-                    return false;
+                    return true;
                 }
                 else if (squares[y, x].CurrentPiece != null && squares[y, x].CurrentPiece.Side == this.Side)
                 {
@@ -71,34 +53,39 @@ namespace FinalProject
                 }
                 else
                 {
-                    if (MainActivity.boardGame.GetYourKing(Side).OnCheck)
+                    if (squares[y, x].CurrentPiece == null)
                     {
-                        var c = squares[y, x].CurrentPiece;
-                        var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
-                        squares[y, x].CurrentPiece = org.CurrentPiece;
-                        squares[y, x].CurrentPiece.SetCords(squares[y, x].Center);
-                        MainActivity.boardGame.GetYourKing(Side).OnCheck = false;
-                        MainActivity.boardGame.GetYourKing(Side).IsOnCheck(squares);
-                        if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
+                        if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y, x]))
                         {
-                            squares[y, x].CurrentPiece = c;
-                            org.CurrentPiece.SetCords(org.Center);
                             possibilities.Add(squares[y, x]);
-                            return false;
                         }
-                        squares[y, x].CurrentPiece = c;
-                        org.CurrentPiece.SetCords(org.Center);
-                    }
-                    else
-                    {
-                        possibilities.Add(squares[y, x]);
-                        return false;
                     }
                     return false;
                 }
-
             }
             return false;
+        }
+        public bool CheckIfMoveLegal(BoardSquare target)
+        {
+            if (MainActivity.boardGame.GetYourKing(Side).OnCheck)
+            {
+                var c = target.CurrentPiece;
+                var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
+                target.CurrentPiece = org.CurrentPiece;
+                target.CurrentPiece.SetCords(target.Center);
+                MainActivity.boardGame.GetYourKing(Side).OnCheck = false;
+                MainActivity.boardGame.GetYourKing(Side).IsOnCheck(MainActivity.boardGame.Squares);
+                if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
+                {
+                    target.CurrentPiece = c;
+                    org.CurrentPiece.SetCords(org.Center);
+                    return true;
+                }
+                target.CurrentPiece = c;
+                org.CurrentPiece.SetCords(org.Center);
+                return false;
+            }
+            return true;
         }
     }
 }

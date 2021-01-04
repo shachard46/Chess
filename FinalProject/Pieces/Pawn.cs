@@ -28,14 +28,20 @@ namespace FinalProject.Pieces
                             if (squares[y + direction, x + i].CurrentPiece != null
                                 && squares[y + direction, x + i].CurrentPiece.Side != this.Side)
                             {
-                                possibilities.Add(squares[y + direction, x + i]);
+                                if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y + direction, x + i]))
+                                {
+                                    possibilities.Add(squares[y + direction, x + i]);
+                                }
                             }
                         }
                         break;
                     case 0:
                         if (squares[y + direction, x + i].CurrentPiece == null)
                         {
-                            possibilities.Add(squares[y + direction, x]);
+                            if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y + direction, x]))
+                            {
+                                possibilities.Add(squares[y + direction, x]);
+                            }
                         }
                         break;
                 }
