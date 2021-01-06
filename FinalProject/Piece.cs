@@ -53,12 +53,9 @@ namespace FinalProject
                 }
                 else
                 {
-                    if (squares[y, x].CurrentPiece == null)
+                    if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y, x]))
                     {
-                        if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y, x]))
-                        {
-                            possibilities.Add(squares[y, x]);
-                        }
+                        possibilities.Add(squares[y, x]);
                     }
                     return false;
                 }
@@ -67,22 +64,22 @@ namespace FinalProject
         }
         public bool CheckIfMoveLegal(BoardSquare target)
         {
-            if (MainActivity.boardGame.GetYourKing(Side).OnCheck)
+            var c = target.CurrentPiece;
+            var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
+            if ((int)MainActivity.boardGame.turn == (int)org.CurrentPiece.Side)
             {
-                var c = target.CurrentPiece;
-                var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
                 target.CurrentPiece = org.CurrentPiece;
+                org.CurrentPiece = null;
                 target.CurrentPiece.SetCords(target.Center);
                 MainActivity.boardGame.GetYourKing(Side).OnCheck = false;
                 MainActivity.boardGame.GetYourKing(Side).IsOnCheck(MainActivity.boardGame.Squares);
-                if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
-                {
-                    target.CurrentPiece = c;
-                    org.CurrentPiece.SetCords(org.Center);
-                    return true;
-                }
+                org.CurrentPiece = target.CurrentPiece;
                 target.CurrentPiece = c;
                 org.CurrentPiece.SetCords(org.Center);
+                if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
+                {
+                    return true;
+                }
                 return false;
             }
             return true;
