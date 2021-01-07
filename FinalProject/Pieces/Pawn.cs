@@ -23,7 +23,8 @@ namespace FinalProject.Pieces
 
                     case -1:
                     case 1:
-                        if (!(x == squares.GetLength(0) - 1 && i > 0) && !(x == 0 && i < 0))
+                        if (!(x == squares.GetLength(0) - 1 && i > 0) && !(x == 0 && i < 0) &&
+                            !(y == squares.GetLength(1) - 1 && direction > 0) && !(y == 0 && direction < 0))
                         {
                             if (squares[y + direction, x + i].CurrentPiece != null
                                 && squares[y + direction, x + i].CurrentPiece.Side != this.Side)
@@ -36,7 +37,8 @@ namespace FinalProject.Pieces
                         }
                         break;
                     case 0:
-                        if (squares[y + direction, x + i].CurrentPiece == null)
+                        if (!(y == squares.GetLength(1) - 1 && direction > 0) && !(y == 0 && direction < 0) &&
+                            squares[y + direction, x].CurrentPiece == null)
                         {
                             if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y + direction, x]))
                             {
@@ -47,7 +49,7 @@ namespace FinalProject.Pieces
                 }
 
             }
-            if ((y == 1 && Side == side.Black) || (y == 6 && Side == side.White))
+            if (((y == 1 && Side == side.Black) || (y == 6 && Side == side.White)) && CheckIfMoveLegal(MainActivity.boardGame.Squares[y + 2 * direction, x]))
             {
                 possibilities.Add(squares[y + 2 * direction, x]);
             }

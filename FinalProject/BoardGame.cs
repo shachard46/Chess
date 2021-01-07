@@ -12,9 +12,10 @@ namespace FinalProject
     {
         private BoardSquare[,] squares;
         private BoardSquare played;
+        private Text gameOver;
         private struct Constants
         {
-            public const int SQUARE_SIDE = 90;
+            public const int SQUARE_SIDE = 13088;
             public const int R_AND_C = 8;
         }
         private GameState state = GameState.Idle;
@@ -68,6 +69,7 @@ namespace FinalProject
                     i == 0 ? Piece.side.Black : Piece.side.White);
             }
             for (int i = 1; i < Constants.R_AND_C; i += 5)
+            {
                 for (int j = 0; j < Constants.R_AND_C; j++)
                 {
                     {
@@ -75,59 +77,96 @@ namespace FinalProject
                             i == 1 ? Piece.side.Black : Piece.side.White);
                     }
                 }
+            }
+            gameOver = new Text("", 0, 0, Color.Red);
         }
         protected override void OnDraw(Canvas canvas)
         {
             base.OnDraw(canvas);
-            foreach (BoardSquare square in Squares)
+            switch (IsGameOver())
             {
-                canvas.DrawRect(
-                    square.Center[0] - Constants.SQUARE_SIDE / 2,
-                    square.Center[1] - Constants.SQUARE_SIDE / 2,
-                    square.Center[0] + Constants.SQUARE_SIDE / 2,
-                    square.Center[1] + Constants.SQUARE_SIDE / 2, square.Paint);
-            }
-            foreach (BoardSquare square in Squares)
-            {
-                if (square.CurrentPiece != null && !square.CurrentPiece.Eaten)
-                {
-                    //square.CurrentPiece.Draw(canvas);
+                case 0:
+                    gameOver.setText("Black Wins");
+                    gameOver.SetX(canvas.Width / 2);
+                    gameOver.SetY(canvas.Height / 2);
+                    break;
+                case 1:
+                    gameOver.setText("White Wins");
+                    gameOver.SetX(canvas.Width / 2);
+                    gameOver.SetY(canvas.Height / 2);
+                    break;
+                case 2:
+                    gameOver.setText("Draw");
+                    gameOver.SetX(canvas.Width / 2);
+                    gameOver.SetY(canvas.Height / 2);
+                    break;
+                default:
+                    foreach (BoardSquare square in Squares)
+                    {
+                        canvas.DrawRect(
+                            square.Center[0] - Constants.SQUARE_SIDE / 2,
+                            square.Center[1] - Constants.SQUARE_SIDE / 2,
+                            square.Center[0] + Constants.SQUARE_SIDE / 2,
+                            square.Center[1] + Constants.SQUARE_SIDE / 2, square.Paint);
+                    }
+                    foreach (BoardSquare square in Squares)
+                    {
+                        if (square.CurrentPiece != null && !square.CurrentPiece.Eaten)
+                        {
+                            //square.CurrentPiece.Draw(canvas);
+                            using (Paint p = new Paint())
+                            {
+                                Text text = new Text("", -Constants.SQUARE_SIDE * 0.07f + square.CurrentPiece.GetX(),
+                                    Constants.SQUARE_SIDE * 0.07f + square.CurrentPiece.GetY(), Color.Black);
+                                text.TextSize = 30;
+                                if (square.CurrentPiece is Pawn)
+                                    text.setText("P");
+                                if (square.CurrentPiece is King)
+                                    text.setText("K");
+                                if (square.CurrentPiece is Rook)
+                                    text.setText("R");
+                                if (square.CurrentPiece is Bishop)
+                                    text.setText("B");
+                                if (square.CurrentPiece is Queen)
+                                    text.setText("Q");
+                                if (square.CurrentPiece is Knight)
+                                    text.setText("N");
+                                p.Color = square.CurrentPiece.Side == Piece.side.Black ? Color.LightSalmon : Color.LightBlue;
+                                canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
+                                text.Draw(canvas);
+                            }
+                        }
+                    }
+
                     using (Paint p = new Paint())
                     {
-                        if (square.CurrentPiece is Pawn)
-                            p.Color = square.CurrentPiece.Side == Piece.side.Black ? Color.Red : Color.Blue;
-                        if (square.CurrentPiece is King)
-                            p.Color = Color.Brown;
-                        if (square.CurrentPiece is Rook)
-                            p.Color = Color.Green;
-                        if (square.CurrentPiece is Bishop)
-                            p.Color = Color.Cyan;
-                        canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
+                        {
+                            if (played != null && played.CurrentPiece != null)
+                            {
+                                //played.CurrentPiece.Draw(canvas);
+                                Text text = new Text("", -Constants.SQUARE_SIDE * 0.07f + played.CurrentPiece.GetX(), Constants.SQUARE_SIDE * 0.07f + played.CurrentPiece.GetY(), Color.Black);
+                                text.TextSize = 30;
+                                if (played.CurrentPiece is Pawn)
+                                    text.setText("P");
+                                if (played.CurrentPiece is King)
+                                    text.setText("K");
+                                if (played.CurrentPiece is Rook)
+                                    text.setText("R");
+                                if (played.CurrentPiece is Bishop)
+                                    text.setText("B");
+                                if (played.CurrentPiece is Queen)
+                                    text.setText("Q");
+                                if (played.CurrentPiece is Knight)
+                                    text.setText("N");
+                                p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Salmon : Color.DeepSkyBlue;
+                                canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
+                                text.Draw(canvas);
+                            }
+                        }
                     }
-                }
+                    break;
             }
-
-            //{
-
-            //}
-            using (Paint p = new Paint())
-            {
-                {
-                    if (played != null && played.CurrentPiece != null)
-                    {
-                        //played.CurrentPiece.Draw(canvas);
-                        if (played.CurrentPiece is Pawn)
-                            p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Red : Color.Blue;
-                        if (played.CurrentPiece is King)
-                            p.Color = Color.Brown;
-                        if (played.CurrentPiece is Rook)
-                            p.Color = Color.Green;
-                        if (played.CurrentPiece is Bishop)
-                            p.Color = Color.Cyan;
-                        canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), 30, p);
-                    }
-                }
-            }
+            gameOver.Draw(canvas);
         }
 
         public override bool OnTouchEvent(MotionEvent e)
@@ -231,7 +270,7 @@ namespace FinalProject
         {
             int direction = king.Center[0] > rook.Center[0] ? -1 : 1;
             BoardSquare kingDest = GetSquareByCords(king.Center[0] +
-                direction  * Math.Abs(king.Center[0] - rook.Center[0] + direction * Constants.SQUARE_SIDE), king.Center[1]);
+                direction * Math.Abs(king.Center[0] - rook.Center[0] + direction * Constants.SQUARE_SIDE), king.Center[1]);
             BoardSquare rookDest = GetSquareByCords(rook.Center[0]
                 - direction * 2 * Constants.SQUARE_SIDE, rook.Center[1]);
             king.CurrentPiece.SetCords(kingDest.Center);
@@ -276,14 +315,46 @@ namespace FinalProject
 
         public King GetYourKing(Piece.side side)
         {
-            foreach(BoardSquare square in Squares)
+            foreach (BoardSquare square in Squares)
             {
-                if(square.CurrentPiece is King && square.CurrentPiece.Side == side)
+                if (square.CurrentPiece is King && square.CurrentPiece.Side == side)
                 {
                     return (King)square.CurrentPiece;
                 }
             }
             return null;
+        }
+        public int IsGameOver()
+        {
+            bool black = true, white = true;
+            foreach (BoardSquare square in squares)
+            {
+                if (square.CurrentPiece != null)
+                {
+                    if (square.CurrentPiece.Side == Piece.side.White && black)
+                    {
+                        black = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0;
+                    }
+                    else if (square.CurrentPiece.Side == Piece.side.Black && white)
+                    {
+                        white = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0;
+                    }
+                }
+            }
+            if (black)
+            {
+                if (!GetYourKing(Piece.side.White).OnCheck)
+                    return 2;
+                return 0;
+            }
+            if (white)
+            {
+                if (!GetYourKing(Piece.side.Black).OnCheck)
+                    return 2;
+                return 1;
+            }
+            else
+                return -1;
         }
     }
 }

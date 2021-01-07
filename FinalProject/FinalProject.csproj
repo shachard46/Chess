@@ -74,6 +74,7 @@
     <Compile Include="Pieces\Pawn.cs" />
     <Compile Include="Pieces\Knight.cs" />
     <Compile Include="CastledPiece.cs" />
+    <Compile Include="Text.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

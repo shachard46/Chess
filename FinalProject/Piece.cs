@@ -66,7 +66,7 @@ namespace FinalProject
         {
             var c = target.CurrentPiece;
             var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
-            if ((int)MainActivity.boardGame.turn == (int)org.CurrentPiece.Side)
+            if (org.CurrentPiece != null && (int)MainActivity.boardGame.turn == (int)org.CurrentPiece.Side)
             {
                 target.CurrentPiece = org.CurrentPiece;
                 org.CurrentPiece = null;
