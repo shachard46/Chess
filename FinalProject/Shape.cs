@@ -52,5 +52,10 @@ namespace FinalProject
         {
             return x == this.x && y == this.y;
         }
+
+        public virtual Shape Flip()
+        {
+            return new Shape(GetY(), GetX(), GetPainter().Color);
+        }
     }
 }

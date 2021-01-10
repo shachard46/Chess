@@ -19,5 +19,9 @@ namespace FinalProject
             SetContentView(boardGame);
         }
 
+        private void MainActivity_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

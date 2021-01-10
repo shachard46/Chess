@@ -75,6 +75,7 @@
     <Compile Include="Pieces\Knight.cs" />
     <Compile Include="CastledPiece.cs" />
     <Compile Include="Text.cs" />
+    <Compile Include="Rectangle.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

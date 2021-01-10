@@ -15,7 +15,7 @@ namespace FinalProject
         private Text gameOver;
         private struct Constants
         {
-            public const int SQUARE_SIDE = 13088;
+            public const int SQUARE_SIDE = 85;
             public const int R_AND_C = 8;
         }
         private GameState state = GameState.Idle;
@@ -42,11 +42,11 @@ namespace FinalProject
                 for (int j = 0; j < Constants.R_AND_C; j++)
                 {
                     color = color == Color.White ? Color.Black : Color.White;
-                    Squares[i, j] = new BoardSquare(
-                        j * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE / 2,
-                        i * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE / 2, null);
-                    Squares[i, j].Paint.Color = color;
-                    Squares[i, j].SideLength = Constants.SQUARE_SIDE;
+                    Rectangle rectangle = new Rectangle(
+                        j * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 1.25f,
+                        i * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 1.25f,
+                        Constants.SQUARE_SIDE, Constants.SQUARE_SIDE, color);
+                    Squares[i, j] = new BoardSquare(rectangle, null);
                 }
             }
             for (int i = 0; i < Constants.R_AND_C; i += 7)
@@ -87,88 +87,109 @@ namespace FinalProject
             {
                 case 0:
                     gameOver.setText("Black Wins");
-                    gameOver.SetX(canvas.Width / 2);
-                    gameOver.SetY(canvas.Height / 2);
                     break;
                 case 1:
                     gameOver.setText("White Wins");
-                    gameOver.SetX(canvas.Width / 2);
-                    gameOver.SetY(canvas.Height / 2);
                     break;
                 case 2:
                     gameOver.setText("Draw");
-                    gameOver.SetX(canvas.Width / 2);
-                    gameOver.SetY(canvas.Height / 2);
                     break;
                 default:
-                    foreach (BoardSquare square in Squares)
-                    {
-                        canvas.DrawRect(
-                            square.Center[0] - Constants.SQUARE_SIDE / 2,
-                            square.Center[1] - Constants.SQUARE_SIDE / 2,
-                            square.Center[0] + Constants.SQUARE_SIDE / 2,
-                            square.Center[1] + Constants.SQUARE_SIDE / 2, square.Paint);
-                    }
-                    foreach (BoardSquare square in Squares)
-                    {
-                        if (square.CurrentPiece != null && !square.CurrentPiece.Eaten)
-                        {
-                            //square.CurrentPiece.Draw(canvas);
-                            using (Paint p = new Paint())
-                            {
-                                Text text = new Text("", -Constants.SQUARE_SIDE * 0.07f + square.CurrentPiece.GetX(),
-                                    Constants.SQUARE_SIDE * 0.07f + square.CurrentPiece.GetY(), Color.Black);
-                                text.TextSize = 30;
-                                if (square.CurrentPiece is Pawn)
-                                    text.setText("P");
-                                if (square.CurrentPiece is King)
-                                    text.setText("K");
-                                if (square.CurrentPiece is Rook)
-                                    text.setText("R");
-                                if (square.CurrentPiece is Bishop)
-                                    text.setText("B");
-                                if (square.CurrentPiece is Queen)
-                                    text.setText("Q");
-                                if (square.CurrentPiece is Knight)
-                                    text.setText("N");
-                                p.Color = square.CurrentPiece.Side == Piece.side.Black ? Color.LightSalmon : Color.LightBlue;
-                                canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
-                                text.Draw(canvas);
-                            }
-                        }
-                    }
-
-                    using (Paint p = new Paint())
-                    {
-                        {
-                            if (played != null && played.CurrentPiece != null)
-                            {
-                                //played.CurrentPiece.Draw(canvas);
-                                Text text = new Text("", -Constants.SQUARE_SIDE * 0.07f + played.CurrentPiece.GetX(), Constants.SQUARE_SIDE * 0.07f + played.CurrentPiece.GetY(), Color.Black);
-                                text.TextSize = 30;
-                                if (played.CurrentPiece is Pawn)
-                                    text.setText("P");
-                                if (played.CurrentPiece is King)
-                                    text.setText("K");
-                                if (played.CurrentPiece is Rook)
-                                    text.setText("R");
-                                if (played.CurrentPiece is Bishop)
-                                    text.setText("B");
-                                if (played.CurrentPiece is Queen)
-                                    text.setText("Q");
-                                if (played.CurrentPiece is Knight)
-                                    text.setText("N");
-                                p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Salmon : Color.DeepSkyBlue;
-                                canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
-                                text.Draw(canvas);
-                            }
-                        }
-                    }
+                    DrawBoard(canvas);
+                    DrawPieces(canvas);
                     break;
             }
+            gameOver.SetX(canvas.Width / 2);
+            gameOver.SetY(canvas.Height / 2);
             gameOver.Draw(canvas);
         }
 
+        private void DrawBoard(Canvas canvas)
+        {
+            Rectangle squareIndexRect = new Rectangle(Constants.SQUARE_SIDE * 0.25f,
+                Constants.SQUARE_SIDE * 0.375f, Constants.SQUARE_SIDE * 0.75f, Constants.SQUARE_SIDE, Color.White);
+            Text squareIndex = new Text("", Constants.SQUARE_SIDE * 0.25f,
+                Constants.SQUARE_SIDE * 0.375f, Color.Black, 30);
+
+            for (int i = 0; i < Constants.R_AND_C; i++)
+            {
+                char horz = (char)(i + 65);
+                int vert = i + 1;
+                squareIndex.SetX(squareIndex.GetX() + Constants.SQUARE_SIDE);
+                squareIndexRect.SetX(squareIndexRect.GetX() + Constants.SQUARE_SIDE);
+
+                squareIndex.setText(horz.ToString());
+
+                squareIndexRect.Draw(canvas);
+                squareIndex.Draw(canvas);
+
+                squareIndex.setText(vert.ToString());
+                squareIndexRect.Flip().Draw(canvas);
+                squareIndex.Flip().Draw(canvas);
+            }
+            foreach (BoardSquare square in Squares)
+            {
+                square.Draw(canvas);
+            }
+        }
+
+        private void DrawPieces(Canvas canvas)
+        {
+            foreach (BoardSquare square in Squares)
+            {
+                if (square.CurrentPiece != null && !square.CurrentPiece.Eaten)
+                {
+                    //square.CurrentPiece.Draw(canvas);
+                    using (Paint p = new Paint())
+                    {
+                        Text text = new Text("", square.CurrentPiece.GetX(),
+                            square.CurrentPiece.GetY(), Color.Black, 30);
+                        if (square.CurrentPiece is Pawn)
+                            text.setText("P");
+                        if (square.CurrentPiece is King)
+                            text.setText("K");
+                        if (square.CurrentPiece is Rook)
+                            text.setText("R");
+                        if (square.CurrentPiece is Bishop)
+                            text.setText("B");
+                        if (square.CurrentPiece is Queen)
+                            text.setText("Q");
+                        if (square.CurrentPiece is Knight)
+                            text.setText("N");
+                        p.Color = square.CurrentPiece.Side == Piece.side.Black ? Color.LightSalmon : Color.LightBlue;
+                        canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
+                        text.Draw(canvas);
+                    }
+                }
+            }
+
+            using (Paint p = new Paint())
+            {
+                {
+                    if (played != null && played.CurrentPiece != null)
+                    {
+                        //played.CurrentPiece.Draw(canvas);
+                        Text text = new Text("", played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Color.Black);
+                        text.TextSize = 30;
+                        if (played.CurrentPiece is Pawn)
+                            text.setText("P");
+                        if (played.CurrentPiece is King)
+                            text.setText("K");
+                        if (played.CurrentPiece is Rook)
+                            text.setText("R");
+                        if (played.CurrentPiece is Bishop)
+                            text.setText("B");
+                        if (played.CurrentPiece is Queen)
+                            text.setText("Q");
+                        if (played.CurrentPiece is Knight)
+                            text.setText("N");
+                        p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Salmon : Color.DeepSkyBlue;
+                        canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
+                        text.Draw(canvas);
+                    }
+                }
+            }
+        }
         public override bool OnTouchEvent(MotionEvent e)
         {
             if (state == GameState.Idle)

@@ -7,9 +7,11 @@ namespace FinalProject
     public class BoardSquare
     {
         public static Paint possible;
-        public BoardSquare(float x, float y, Piece currentPiece)
+        private Rectangle rectangle;
+        public BoardSquare(Rectangle rectangle, Piece currentPiece)
         {
-            Center = new float[] { x, y };
+            this.rectangle = rectangle;
+            Center = new float[] { rectangle.GetX(), rectangle.GetY() };
             CurrentPiece = currentPiece;
             possible = new Paint();
             possible.SetStyle(Paint.Style.Stroke);
@@ -18,23 +20,21 @@ namespace FinalProject
         }
 
         public float[] Center { get; set; }
-        public Paint Paint { get; set; } = new Paint();
-        public int SideLength { get; set; }
-        public Piece CurrentPiece { get; set; }
+        public Piece CurrentPiece { get; set; } = null;
 
         public bool IsInArea(Piece piece)
         {
-            float x = piece.GetX();
-            float y = piece.GetY();
-            bool isInX = Center[0] + SideLength / 2 > x && Center[0] - SideLength / 2 < x;
-            bool isInY = Center[1] + SideLength / 2 > y && Center[1] - SideLength / 2 < y;
-            return isInX && isInY;
+            return IsInArea(piece.GetX(), piece.GetY());
         }
         public bool IsInArea(float x, float y)
         {
-            bool isInX = Center[0] + SideLength / 2 > x && Center[0] - SideLength / 2 < x;
-            bool isInY = Center[1] + SideLength / 2 > y && Center[1] - SideLength / 2 < y;
-            return isInX && isInY;
+            return rectangle.IsInArea(x, y);
         }
+
+        public void Draw(Canvas canvas)
+        {
+            rectangle.Draw(canvas);
+        }
+
     }
 }
