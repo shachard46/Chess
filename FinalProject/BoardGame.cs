@@ -11,6 +11,7 @@ namespace FinalProject
     public class BoardGame : View
     {
         private BoardSquare[,] squares;
+        private BoardSquare[] promotionSquares;
         private BoardSquare played;
         private Text gameOver;
         private struct Constants
@@ -25,7 +26,7 @@ namespace FinalProject
 
         private enum GameState
         {
-            Idle, Holding
+            Idle, Holding, GameOver, Promotion
         }
         public enum Turn
         {
@@ -35,7 +36,15 @@ namespace FinalProject
         public BoardGame(Context context) : base(context)
         {
             Image.View = this;
-            Squares = new BoardSquare[Constants.R_AND_C, Constants.R_AND_C];
+            GenerateBoard();
+            GeneratePieces();
+            GeneratePromotionChooser();
+            gameOver = new Text("", 0, 0, Color.Red);
+        }
+        private void GenerateBoard()
+        {
+            squares = new BoardSquare[Constants.R_AND_C, Constants.R_AND_C];
+            promotionSquares = new BoardSquare[4];
             for (int i = 0; i < Constants.R_AND_C; i++)
             {
                 Color color = i % 2 == 0 ? Color.White : Color.Black;
@@ -49,6 +58,9 @@ namespace FinalProject
                     Squares[i, j] = new BoardSquare(rectangle, null);
                 }
             }
+        }
+        private void GeneratePieces()
+        {
             for (int i = 0; i < Constants.R_AND_C; i += 7)
             {
                 Squares[i, 0].CurrentPiece = new Rook(Squares[i, 0].Center,
@@ -78,7 +90,15 @@ namespace FinalProject
                     }
                 }
             }
-            gameOver = new Text("", 0, 0, Color.Red);
+        }
+        private void GeneratePromotionChooser()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                promotionSquares[i] = new BoardSquare(new Rectangle(
+                    squares[7, 0].Center[0] + Constants.SQUARE_SIDE / 2 + 2 * i * Constants.SQUARE_SIDE,
+                    squares[7, 0].Center[1] + Constants.SQUARE_SIDE * 1.5f, Constants.SQUARE_SIDE * 2, Constants.SQUARE_SIDE * 2, Color.White), null);
+            }
         }
         protected override void OnDraw(Canvas canvas)
         {
@@ -87,18 +107,19 @@ namespace FinalProject
             {
                 case 0:
                     gameOver.setText("Black Wins");
+                    state = GameState.GameOver;
                     break;
                 case 1:
                     gameOver.setText("White Wins");
+                    state = GameState.GameOver;
                     break;
                 case 2:
                     gameOver.setText("Draw");
-                    break;
-                default:
-                    DrawBoard(canvas);
-                    DrawPieces(canvas);
+                    state = GameState.GameOver;
                     break;
             }
+            DrawBoard(canvas);
+            DrawPieces(canvas);
             gameOver.SetX(canvas.Width / 2);
             gameOver.SetY(canvas.Height / 2);
             gameOver.Draw(canvas);
@@ -131,6 +152,50 @@ namespace FinalProject
             {
                 square.Draw(canvas);
             }
+            if (state == GameState.Promotion)
+            {
+                DrawPromotionChooser(canvas);
+            }
+        }
+
+        private void DrawPromotionChooser(Canvas canvas)
+        {
+            //Image piece;
+            //var res = turn == Turn.Black ? new int[]
+            //{
+            //    Resource.Drawable.black_queen,
+            //    Resource.Drawable.black_bishop,
+            //    Resource.Drawable.black_knight,
+            //    Resource.Drawable.black_rook,
+            //} : new int[]
+            //{
+            //    Resource.Drawable.white_queen,
+            //    Resource.Drawable.white_bishop,
+            //    Resource.Drawable.white_knight,
+            //    Resource.Drawable.white_rook,
+            //};
+            //for (int i = 0; i < 4; i++)
+            //{
+            //piece = new Image(0, 0, res[i]);
+            //piece.Draw(canvas);
+            var label = new string[]
+            {
+                "R", "B", "Q", "N"
+            };
+            using (Paint p = new Paint())
+            {
+                Text text = new Text("", 0, 0, Color.Black, 50);
+                p.Color = turn == Turn.Black ? Color.LightSalmon : Color.LightBlue;
+                for (int i = 0; i < 4; i++)
+                {
+                    text.setText(label[i]);
+                    text.SetX(promotionSquares[i].Center[0]);
+                    text.SetY(promotionSquares[i].Center[1]);
+                    canvas.DrawCircle(promotionSquares[i].Center[0], promotionSquares[i].Center[1], Constants.SQUARE_SIDE * 0.8f, p);
+                    text.Draw(canvas);
+                }
+            }
+
         }
 
         private void DrawPieces(Canvas canvas)
@@ -192,79 +257,90 @@ namespace FinalProject
         }
         public override bool OnTouchEvent(MotionEvent e)
         {
-            if (state == GameState.Idle)
+            switch (state)
             {
-                played = GetSquareByCords(e.GetX(), e.GetY());
-                if (played != null && played.CurrentPiece != null)
-                {
-                    if ((int)played.CurrentPiece.Side != (int)turn)
-                        played = null;
-                }
-                if (played != null && played.CurrentPiece != null)
-                {
-                    state = GameState.Holding;
-                    Invalidate();
-                }
-            }
-            if (state == GameState.Holding)
-            {
-                if (e.Action == MotionEventActions.Down)
-                {
-                    BoardSquare clicked = GetSquareByCords(e.GetX(), e.GetY());
-                    if (clicked.CurrentPiece == null || (int)clicked.CurrentPiece.Side != (int)turn)
+                case GameState.Idle:
+                    played = GetSquareByCords(e.GetX(), e.GetY());
+                    if (played != null && played.CurrentPiece != null)
                     {
-                        played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
+                        if ((int)played.CurrentPiece.Side != (int)turn)
+                            played = null;
                     }
-                    else
+                    if (played != null && played.CurrentPiece != null)
                     {
-                        if (played.CurrentPiece is King && clicked.CurrentPiece is Rook && clicked.CurrentPiece.Side == played.CurrentPiece.Side)
+                        state = GameState.Holding;
+                        Invalidate();
+                    }
+                    break;
+                case GameState.Holding:
+                    if (e.Action == MotionEventActions.Down)
+                    {
+                        BoardSquare clicked = GetSquareByCords(e.GetX(), e.GetY());
+                        if (clicked.CurrentPiece == null || (int)clicked.CurrentPiece.Side != (int)turn)
                         {
-
+                            played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
                         }
                         else
                         {
-                            played = GetSquareByCords(e.GetX(), e.GetY());
+                            if (!(played.CurrentPiece is King && clicked.CurrentPiece is Rook && clicked.CurrentPiece.Side == played.CurrentPiece.Side))
+                            {
+                                played = GetSquareByCords(e.GetX(), e.GetY());
+                            }
                         }
                     }
-                }
-                else if (e.Action == MotionEventActions.Move)
-                {
-                    played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
-                }
-                else if (e.Action == MotionEventActions.Up)
-                {
-                    var clicked = GetSquareByCords(e.GetX(), e.GetY());
-                    if (played.CurrentPiece is King && clicked.CurrentPiece is Rook && clicked.CurrentPiece.Side == played.CurrentPiece.Side)
+                    else if (e.Action == MotionEventActions.Move)
                     {
-                        if (((CastledPiece)(played.CurrentPiece)).CanCastle(Squares)
-                                && ((CastledPiece)(clicked.CurrentPiece)).CanCastle(Squares))
+                        played.CurrentPiece.SetCords(new float[] { e.GetX(), e.GetY() });
+                    }
+                    else if (e.Action == MotionEventActions.Up)
+                    {
+                        var clicked = GetSquareByCords(e.GetX(), e.GetY());
+                        if (played.CurrentPiece is King && clicked.CurrentPiece is Rook && clicked.CurrentPiece.Side == played.CurrentPiece.Side)
                         {
-                            if (Math.Abs(played.Center[0] - clicked.Center[0]) > 2 * Constants.SQUARE_SIDE)
+                            if (((CastledPiece)(played.CurrentPiece)).CanCastle(Squares)
+                                    && ((CastledPiece)(clicked.CurrentPiece)).CanCastle(Squares))
                             {
-                                Castle(played, clicked);
+                                if (Math.Abs(played.Center[0] - clicked.Center[0]) > 2 * Constants.SQUARE_SIDE)
+                                {
+                                    Castle(played, clicked);
+                                    turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
+                                    state = GameState.Idle;
+                                }
+                            }
+                        }
+                        else if (Move(played, clicked))
+                        {
+                            if (state != GameState.Promotion)
+                            {
                                 turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
                                 state = GameState.Idle;
                             }
                         }
+                        else
+                        {
+                            played.CurrentPiece.SetCords(played.Center);
+                        }
                     }
-                    else if (Move(played, clicked))
+                    Invalidate();
+                    break;
+                case GameState.GameOver:
+                    break;
+                case GameState.Promotion:
+                    for (int i = 0; i < promotionSquares.Length; i++)
                     {
-                        turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
-                        state = GameState.Idle;
+                        if (promotionSquares[i].IsInArea(e.GetX(), e.GetY()))
+                        {
+                            Promotion(i);
+                        }
                     }
-                    else
-                    {
-                        played.CurrentPiece.SetCords(played.Center);
-                    }
-                }
-                Invalidate();
+                    break;
             }
+
             return true;
         }
 
         public bool Move(BoardSquare source, BoardSquare destinaiton)
         {
-            GetYourKing(source.CurrentPiece.Side).IsOnCheck(Squares);
             source.CurrentPiece.SetCords(source.Center);
             if (source.CurrentPiece.GetPossiblePlaces(Squares).Contains(destinaiton))
             {
@@ -275,6 +351,27 @@ namespace FinalProject
                 }
                 destinaiton.CurrentPiece = source.CurrentPiece;
                 source.CurrentPiece = null;
+                if (destinaiton.CurrentPiece is Pawn)
+                {
+                    var temp = new BoardSquare[64];
+                    int w = squares.GetLength(0); // width
+                    int h = squares.GetLength(1); // height
+
+                    for (int y = 0; y < h; y++)
+                    {
+                        for (int x = 0; x < w; x++)
+                        {
+                            temp[Constants.R_AND_C * y + x] = squares[y, x];
+                        }
+                    }
+                    int a = Array.IndexOf(temp, destinaiton);
+                    if (Array.IndexOf(temp, destinaiton) < 8 || Array.IndexOf(temp, destinaiton) > 55)
+                    {
+                        state = GameState.Promotion;
+                        played = destinaiton;
+                        Invalidate();
+                    }
+                }
                 if (destinaiton.CurrentPiece is CastledPiece)
                 {
                     ((CastledPiece)destinaiton.CurrentPiece).HasMoved(true);
@@ -287,6 +384,31 @@ namespace FinalProject
             }
             return false;
         }
+
+        private void Promotion(int type)
+        {
+
+            switch (type)
+            {
+                case 0:
+                    played.CurrentPiece = new Rook(played.Center, played.CurrentPiece.Side);
+                    break;
+                case 1:
+                    played.CurrentPiece = new Bishop(played.Center, played.CurrentPiece.Side);
+                    break;
+                case 2:
+                    played.CurrentPiece = new Queen(played.Center, played.CurrentPiece.Side);
+                    break;
+                case 3:
+                    played.CurrentPiece = new Knight(played.Center, played.CurrentPiece.Side);
+                    break;
+            }
+            turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
+            state = GameState.Idle;
+            played = null;
+            Invalidate();
+        }
+
         public void Castle(BoardSquare king, BoardSquare rook)
         {
             int direction = king.Center[0] > rook.Center[0] ? -1 : 1;

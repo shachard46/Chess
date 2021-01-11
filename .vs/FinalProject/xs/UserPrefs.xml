@@ -1,21 +1,22 @@
 ﻿<Properties StartupConfiguration="{4E45CF06-6EA5-4175-B111-70F4E95E8A97}|Default">
   <MonoDevelop.Ide.ItemProperties.FinalProject AndroidDesignerPreferredTheme="AppTheme" AndroidDesignerPreferredDevice="Nexus 10" PreferredExecutionTarget="Android.nexus_4_lollipop_5_0_api_21" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Rectangle.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Image.cs">
     <Files>
       <File FileName="FinalProject/CastledPiece.cs" Line="1" Column="1" />
-      <File FileName="FinalProject/BoardGame.cs" Line="114" Column="72" />
+      <File FileName="FinalProject/BoardGame.cs" Line="160" Column="25" />
       <File FileName="FinalProject/Pieces/King.cs" />
-      <File FileName="FinalProject/Piece.cs" Line="1" Column="1" />
-      <File FileName="FinalProject/BoardSquare.cs" Line="36" Column="36" />
+      <File FileName="FinalProject/Piece.cs" />
+      <File FileName="FinalProject/BoardSquare.cs" />
       <File FileName="FinalProject/Pieces/Bishop.cs" />
-      <File FileName="FinalProject/MainActivity.cs" Line="18" Column="45" />
+      <File FileName="FinalProject/MainActivity.cs" />
       <File FileName="FinalProject/Pieces/Knight.cs" />
       <File FileName="FinalProject/Pieces/Pawn.cs" />
       <File FileName="FinalProject/Pieces/Queen.cs" />
       <File FileName="FinalProject/Pieces/Rook.cs" />
-      <File FileName="FinalProject/Text.cs" Line="6" Column="18" />
-      <File FileName="FinalProject/Shape.cs" Line="18" Column="29" />
-      <File FileName="FinalProject/Rectangle.cs" Line="17" Column="21" />
+      <File FileName="FinalProject/Text.cs" />
+      <File FileName="FinalProject/Shape.cs" />
+      <File FileName="FinalProject/Rectangle.cs" />
+      <File FileName="FinalProject/Image.cs" Line="29" Column="16" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -23,7 +24,7 @@
           <Node name="FinalProject" expanded="True">
             <Node name="FinalProject" expanded="True">
               <Node name="Pieces" expanded="True" />
-              <Node name="Rectangle.cs" selected="True" />
+              <Node name="Image.cs" selected="True" />
             </Node>
           </Node>
         </State>
@@ -33,9 +34,7 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <RunToCursorBreakpoint file="/Users/shachardavid/projects/FinalProject/FinalProject/BoardGame.cs" relfile="FinalProject/BoardGame.cs" line="114" column="76" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>
