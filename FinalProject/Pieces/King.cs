@@ -20,7 +20,7 @@ namespace FinalProject.Pieces
             {
                 if (square.CurrentPiece != null && square.CurrentPiece.Side != Side)
                 {
-                    if (square.CurrentPiece.GetPossiblePlaces(squares).Contains(MainActivity.boardGame.GetBoardSquareByPiece(this)))
+                    if (square.CurrentPiece.GetPossiblePlaces(squares).Contains(GameActivity.boardGame.GetBoardSquareByPiece(this)))
                     {
                         OnCheck = true;
                         return;
@@ -31,8 +31,8 @@ namespace FinalProject.Pieces
         }
         public bool CanCastle(BoardSquare[,] squares)
         {
-            int x = MainActivity.boardGame.GetBoardSquareCords(this)[0],
-                y = MainActivity.boardGame.GetBoardSquareCords(this)[1];
+            int x = GameActivity.boardGame.GetBoardSquareCords(this)[0],
+                y = GameActivity.boardGame.GetBoardSquareCords(this)[1];
             bool can1 = true, can2 = true;
             for (int i = 1; i < 4; i++)
             {
@@ -55,8 +55,8 @@ namespace FinalProject.Pieces
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
             List<BoardSquare> possibilities = new List<BoardSquare>();
-            int x = MainActivity.boardGame.GetBoardSquareCords(this)[0],
-                y = MainActivity.boardGame.GetBoardSquareCords(this)[1];
+            int x = GameActivity.boardGame.GetBoardSquareCords(this)[0],
+                y = GameActivity.boardGame.GetBoardSquareCords(this)[1];
 
             for (int i = y - 1; i <= y + 1; i++)
             {

@@ -41,7 +41,7 @@ namespace FinalProject
             {
                 if (squares[y, x].CurrentPiece == null)
                 {
-                    if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y, x]))
+                    if (CheckIfMoveLegal(GameActivity.boardGame.Squares[y, x]))
                     {
                         possibilities.Add(squares[y, x]);
                     }
@@ -53,7 +53,7 @@ namespace FinalProject
                 }
                 else
                 {
-                    if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y, x]))
+                    if (CheckIfMoveLegal(GameActivity.boardGame.Squares[y, x]))
                     {
                         possibilities.Add(squares[y, x]);
                     }
@@ -65,18 +65,18 @@ namespace FinalProject
         public bool CheckIfMoveLegal(BoardSquare target)
         {
             var c = target.CurrentPiece;
-            var org = MainActivity.boardGame.GetBoardSquareByPiece(this);
-            if (org.CurrentPiece != null && (int)MainActivity.boardGame.turn == (int)org.CurrentPiece.Side)
+            var org = GameActivity.boardGame.GetBoardSquareByPiece(this);
+            if (org.CurrentPiece != null && (int)GameActivity.boardGame.turn == (int)org.CurrentPiece.Side)
             {
                 target.CurrentPiece = org.CurrentPiece;
                 org.CurrentPiece = null;
                 target.CurrentPiece.SetCords(target.Center);
-                MainActivity.boardGame.GetYourKing(Side).OnCheck = false;
-                MainActivity.boardGame.GetYourKing(Side).IsOnCheck(MainActivity.boardGame.Squares);
+                GameActivity.boardGame.GetYourKing(Side).OnCheck = false;
+                GameActivity.boardGame.GetYourKing(Side).IsOnCheck(GameActivity.boardGame.Squares);
                 org.CurrentPiece = target.CurrentPiece;
                 target.CurrentPiece = c;
                 org.CurrentPiece.SetCords(org.Center);
-                if (!MainActivity.boardGame.GetYourKing(Side).OnCheck)
+                if (!GameActivity.boardGame.GetYourKing(Side).OnCheck)
                 {
                     return true;
                 }

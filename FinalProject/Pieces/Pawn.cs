@@ -13,8 +13,8 @@ namespace FinalProject.Pieces
         public override List<BoardSquare> GetPossiblePlaces(BoardSquare[,] squares)
         {
             List<BoardSquare> possibilities = new List<BoardSquare>();
-            int x = MainActivity.boardGame.GetBoardSquareCords(this)[0],
-                y = MainActivity.boardGame.GetBoardSquareCords(this)[1];
+            int x = GameActivity.boardGame.GetBoardSquareCords(this)[0],
+                y = GameActivity.boardGame.GetBoardSquareCords(this)[1];
             int direction = Side == side.White ? -1 : 1;
             for (int i = -1; i <= 1; i++)
             {
@@ -29,7 +29,7 @@ namespace FinalProject.Pieces
                             if (squares[y + direction, x + i].CurrentPiece != null
                                 && squares[y + direction, x + i].CurrentPiece.Side != this.Side)
                             {
-                                if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y + direction, x + i]))
+                                if (CheckIfMoveLegal(GameActivity.boardGame.Squares[y + direction, x + i]))
                                 {
                                     possibilities.Add(squares[y + direction, x + i]);
                                 }
@@ -40,7 +40,7 @@ namespace FinalProject.Pieces
                         if (!(y == squares.GetLength(1) - 1 && direction > 0) && !(y == 0 && direction < 0) &&
                             squares[y + direction, x].CurrentPiece == null)
                         {
-                            if (CheckIfMoveLegal(MainActivity.boardGame.Squares[y + direction, x]))
+                            if (CheckIfMoveLegal(GameActivity.boardGame.Squares[y + direction, x]))
                             {
                                 possibilities.Add(squares[y + direction, x]);
                             }
@@ -49,7 +49,7 @@ namespace FinalProject.Pieces
                 }
 
             }
-            if (((y == 1 && Side == side.Black) || (y == 6 && Side == side.White)) && CheckIfMoveLegal(MainActivity.boardGame.Squares[y + 2 * direction, x]))
+            if (((y == 1 && Side == side.Black) || (y == 6 && Side == side.White)) && CheckIfMoveLegal(GameActivity.boardGame.Squares[y + 2 * direction, x]))
             {
                 possibilities.Add(squares[y + 2 * direction, x]);
             }
