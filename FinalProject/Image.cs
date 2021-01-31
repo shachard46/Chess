@@ -10,25 +10,33 @@ namespace FinalProject
     {
         int height;
         int width;
-
+        bool flip;
         public Bitmap image { get; set; }
         public static View View { get; set; }
 
-        public Image(float x, float y, int res) : base(x, y, Color.White)
+        public Image(float x, float y, int res, bool flip) : base(x, y, Color.White)
         {
+            this.flip = flip;
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.InMutable = true;
             options.InScaled = true;
             options.InDensity = 1000;
-            options.InTargetDensity = 200;
-            image = BitmapFactory.DecodeResource(View.Resources, res,options);
+            options.InTargetDensity = BoardGame.Constants.SQUARE_SIDE * 2;
+            image = BitmapFactory.DecodeResource(View.Resources, res, options);
         }
         public override void Draw(Canvas canvas)
         {
             base.Draw(canvas);
-            canvas.DrawBitmap(image, GetX(), GetY(), GetPainter());
             width = image.GetScaledWidth(canvas);
             height = image.GetScaledHeight(canvas);
+            Matrix matrix = new Matrix();
+            if (flip)
+            {
+                matrix.SetRotate(180, width / 2, height / 2);
+            }
+            matrix.PostTranslate(GetX() - BoardGame.Constants.SQUARE_SIDE - 10,
+                GetY() - BoardGame.Constants.SQUARE_SIDE - 10);
+            canvas.DrawBitmap(image, matrix, GetPainter());
         }
 
         public override bool IsInArea(float x, float y)

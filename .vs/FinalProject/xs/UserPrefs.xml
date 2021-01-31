@@ -1,18 +1,22 @@
 ﻿<Properties StartupConfiguration="{4E45CF06-6EA5-4175-B111-70F4E95E8A97}|Default">
   <MonoDevelop.Ide.ItemProperties.FinalProject AndroidDesignerPreferredTheme="AppTheme" AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.nexus_4_lollipop_5_0_api_21" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Place.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="FinalProject/Resources/layout/game_board.xml">
     <Files>
       <File FileName="FinalProject/Pieces/Pawn.cs" Line="18" Column="47" IsPinned="True" />
       <File FileName="FinalProject/CastledPiece.cs" />
-      <File FileName="FinalProject/BoardGame.cs" Line="22" Column="46" />
-      <File FileName="FinalProject/MainActivity.cs" Line="11" Column="89" />
-      <File FileName="FinalProject/Resources/layout/game_board.xml" Line="13" Column="38" />
+      <File FileName="FinalProject/BoardGame.cs" Line="180" Column="14" />
+      <File FileName="FinalProject/MainActivity.cs" Line="1" Column="1" />
+      <File FileName="FinalProject/Resources/layout/game_board.xml" Line="16" Column="3" />
       <File FileName="FinalProject/GameActions.cs" />
       <File FileName="FinalProject/Resources/layout/homescreen.xml" />
-      <File FileName="FinalProject/GameActivity.cs" Line="17" Column="76" />
-      <File FileName="FinalProject/FirebaseHelper.cs" Line="11" Column="41" />
-      <File FileName="FinalProject/OnlineBoardGame.cs" Line="1" Column="1" />
-      <File FileName="FinalProject/Place.cs" Line="4" Column="10" />
+      <File FileName="FinalProject/GameActivity.cs" />
+      <File FileName="FinalProject/FirebaseHelper.cs" />
+      <File FileName="FinalProject/OnlineBoardGame.cs" />
+      <File FileName="FinalProject/Timer.cs" Line="24" Column="1" />
+      <File FileName="FinalProject/TimerHandler.cs" Line="17" Column="1" />
+      <File FileName="FinalProject/Image.cs" Line="32" Column="1" />
+      <File FileName="FinalProject/Text.cs" Line="19" Column="56" />
+      <File FileName="FinalProject/Resources/Resource.designer.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,15 +25,13 @@
             <Node name="FinalProject" expanded="True">
               <Node name="Pieces" expanded="True" />
               <Node name="Resources" expanded="True">
-                <Node name="layout" expanded="True" />
+                <Node name="layout" expanded="True">
+                  <Node name="game_board.xml" selected="True" />
+                </Node>
               </Node>
-              <Node name="Place.cs" selected="True" />
             </Node>
           </Node>
         </State>
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

@@ -3,18 +3,18 @@ using System;
 namespace FinalProject
 {
     [FirestoreData]
-    public class Place
+    public class Position
     {
         [FirestoreProperty]
         public string Piece { set; get; }
 
         [FirestoreProperty]
-        public string X { set; get; }
+        public int X { set; get; }
 
         [FirestoreProperty]
-        public string Y { set; get; }
+        public int Y { set; get; }
 
-        public Place(string piece, string x, string y)
+        public Position(string piece, int x, int y)
         {
             Piece = piece;
             X = x;

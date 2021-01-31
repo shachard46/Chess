@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Android.Widget;
 using Google.Cloud.Firestore;
 
 namespace FinalProject
@@ -12,16 +13,16 @@ namespace FinalProject
         readonly FirestoreDb db;
         public FirebaseHelper()
         {
-            db = FirestoreDb.Create("");
+            db = FirestoreDb.Create("chess-6b48d");
         }
-        public FirebaseHelper GetInstance()
+        public static FirebaseHelper GetInstance()
         {
             return instance;
         }
         public async Task<List<Position>> GetPositions()
         {
             List<Position> positions = new List<Position>();
-            CollectionReference collection = db.Collection("cities");
+            CollectionReference collection = db.Collection("game");
 
             QuerySnapshot game = await collection.GetSnapshotAsync();
 

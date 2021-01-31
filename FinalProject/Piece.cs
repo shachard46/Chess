@@ -9,12 +9,12 @@ namespace FinalProject
 {
     public abstract class Piece : Image
     {
-        public Piece(float x, float y, int res, side side) : base(x, y, res)
+        public Piece(float x, float y, int res, side side) : base(x, y, res, side == side.Black)
         {
             Side = side;
             Eaten = false;
         }
-        public Piece(float[] cords, int res, side side) : base(cords[0], cords[1], res)
+        public Piece(float[] cords, int res, side side) : base(cords[0], cords[1], res, side == side.Black)
         {
             Side = side;
             Eaten = false;

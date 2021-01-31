@@ -81,6 +81,8 @@
     <Compile Include="OnlineBoardGame.cs" />
     <Compile Include="FirebaseHelper.cs" />
     <Compile Include="Position.cs" />
+    <Compile Include="TimerHandler.cs" />
+    <Compile Include="Timer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

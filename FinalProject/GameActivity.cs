@@ -1,15 +1,8 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
-using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 
 namespace FinalProject
@@ -19,15 +12,42 @@ namespace FinalProject
     {
         public static BoardGame boardGame;
         FrameLayout frameLayout;
+
+        TextView yourTime;
+        TextView opponentTime;
+        Button back;
+        bool toggle;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.game_board);
-            boardGame = new BoardGame(this);
             frameLayout = FindViewById<FrameLayout>(Resource.Id.frame);
+            yourTime = FindViewById<TextView>(Resource.Id.your);
+            opponentTime = FindViewById<TextView>(Resource.Id.opponent);
+            back = FindViewById<Button>(Resource.Id.back);
+
+            boardGame = new BoardGame(this, new TimerHandler(yourTime, this),
+                new TimerHandler(opponentTime, this));
             frameLayout.AddView(boardGame);
+
+            back.Click += Back_Click;
+        }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            var builder = new AlertDialog.Builder(this);
+            builder.SetTitle("Are you sure you want to go back?");
+
+            builder.SetPositiveButton("Yes", (sender, args) =>
+            {
+                StartActivity(new Android.Content.Intent(this, typeof(MainActivity)));
+            });
+            builder.SetNegativeButton("No", (sender, args)=> { });
+            var dialog = builder.Create();
+
+            dialog.Show();
         }
     }
 }

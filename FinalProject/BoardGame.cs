@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Views;
+using Android.Widget;
 using FinalProject.Pieces;
 using SQLite;
 
@@ -10,25 +12,6 @@ namespace FinalProject
 {
     public class BoardGame : View
     {
-        private BoardSquare[,] squares;
-        private BoardSquare[] promotionSquares;
-        private BoardSquare played;
-        private Text gameOver;
-        private bool isOnline;
-        private GameActions actions;
-        public static Piece.side yourSide;
-        public struct Constants
-        {
-            public const int SQUARE_SIDE = 83;
-            public const int R_AND_C = 8;
-        }
-        private GameState state = GameState.Idle;
-        public Turn turn = Turn.White;
-
-        public BoardSquare[,] Squares { get => squares; set => squares = value; }
-        public GameState State { get => state; set => state = value; }
-        public BoardSquare Played { get => played; set => played = value; }
-
         public enum GameState
         {
             Idle, Holding, GameOver, Promotion
@@ -37,8 +20,33 @@ namespace FinalProject
         {
             White, Black
         }
+        public struct Constants
+        {
+            public const int SQUARE_SIDE = 70;
+            public const int R_AND_C = 8;
+        }
 
-        public BoardGame(Context context) : base(context)
+        private Timer whiteTimer;
+        private Timer blackTimer;
+
+        private BoardSquare[,] squares;
+        private BoardSquare[] promotionSquares;
+
+        private BoardSquare played;
+        private Text gameOver;
+        private bool isOnline;
+        private GameActions actions;
+        public static Piece.side yourSide; // destined for online
+        private GameState state = GameState.Idle;
+        public Turn turn = Turn.White;
+
+        public BoardSquare[,] Squares { get => squares; set => squares = value; }
+        public BoardSquare Played { get => played; set => played = value; }
+        public GameState State { get => state; set => state = value; }
+        public Timer WhiteTimer { get => whiteTimer; set => whiteTimer = value; }
+        public Timer BlackTimer { get => blackTimer; set => blackTimer = value; }
+
+        public BoardGame(Context context, TimerHandler whiteHandler, TimerHandler blackHandler) : base(context)
         {
             actions = new GameActions(this);
             Image.View = this;
@@ -46,7 +54,11 @@ namespace FinalProject
             GeneratePieces(Piece.side.Black, Piece.side.White);
             GeneratePromotionChooser();
             gameOver = new Text("", 0, 0, Color.Red);
+            whiteTimer = new Timer(whiteHandler, 0, Turn.White);
+            blackTimer = new Timer(blackHandler, 0, Turn.Black);
+            whiteTimer.Start();
         }
+
         private void GenerateBoard()
         {
             squares = new BoardSquare[Constants.R_AND_C, Constants.R_AND_C];
@@ -127,26 +139,40 @@ namespace FinalProject
 
         private void DrawBoard(Canvas canvas)
         {
-            Rectangle squareIndexRect = new Rectangle(Constants.SQUARE_SIDE * 0.25f,
-                Constants.SQUARE_SIDE * 0.375f, Constants.SQUARE_SIDE * 0.75f, Constants.SQUARE_SIDE, Color.White);
-            Text squareIndex = new Text("", Constants.SQUARE_SIDE * 0.25f,
-                Constants.SQUARE_SIDE * 0.375f, Color.Black, 30);
-
-            for (int i = 0; i < Constants.R_AND_C; i++)
+            for (int s = 0; s < 2; s++)
             {
-                char horz = (char)(i + 65);
-                int vert = i + 1;
-                squareIndex.SetX(squareIndex.GetX() + Constants.SQUARE_SIDE);
-                squareIndexRect.SetX(squareIndexRect.GetX() + Constants.SQUARE_SIDE);
 
-                squareIndex.setText(horz.ToString());
+                Rectangle squareIndexRect = new Rectangle(Constants.SQUARE_SIDE * 0.25f,
+                    Constants.SQUARE_SIDE * 0.375f
+                    + s * (Constants.R_AND_C * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 0.75f),
+                    Constants.SQUARE_SIDE * 0.75f, Constants.SQUARE_SIDE, Color.White);
+                Text squareIndex = new Text("", Constants.SQUARE_SIDE * 0.25f,
+                    Constants.SQUARE_SIDE * 0.375f
+                    + s * (Constants.R_AND_C * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 0.75f), Color.Black, 30);
 
-                squareIndexRect.Draw(canvas);
-                squareIndex.Draw(canvas);
+                for (int i = 0; i < Constants.R_AND_C; i++)
+                {
+                    char horz = (char)(i + 65);
+                    int vert = i + 1;
+                    squareIndex.SetX(squareIndex.GetX() + Constants.SQUARE_SIDE);
+                    squareIndexRect.SetX(squareIndexRect.GetX() + Constants.SQUARE_SIDE);
 
-                squareIndex.setText(vert.ToString());
-                squareIndexRect.Flip().Draw(canvas);
-                squareIndex.Flip().Draw(canvas);
+                    squareIndex.setText(horz.ToString());
+
+                    squareIndexRect.Draw(canvas);
+                    canvas.Save();
+                    canvas.Rotate(180 * s, squareIndex.GetX(), squareIndex.GetY());
+                    squareIndex.Draw(canvas);
+                    canvas.Restore();
+
+                    squareIndex.setText(vert.ToString());
+                    squareIndexRect.Flip().Draw(canvas);
+                    canvas.Save();
+                    canvas.Rotate(180 * s, squareIndex.Flip().GetX(), squareIndex.Flip().GetY());
+                    squareIndex.Flip().Draw(canvas);
+                    canvas.Restore();
+
+                }
             }
             foreach (BoardSquare square in Squares)
             {
@@ -204,27 +230,27 @@ namespace FinalProject
             {
                 if (square.CurrentPiece != null && !square.CurrentPiece.Eaten)
                 {
-                    //square.CurrentPiece.Draw(canvas);
-                    using (Paint p = new Paint())
-                    {
-                        Text text = new Text("", square.CurrentPiece.GetX(),
-                            square.CurrentPiece.GetY(), Color.Black, 30);
-                        if (square.CurrentPiece is Pawn)
-                            text.setText("P");
-                        if (square.CurrentPiece is King)
-                            text.setText("K");
-                        if (square.CurrentPiece is Rook)
-                            text.setText("R");
-                        if (square.CurrentPiece is Bishop)
-                            text.setText("B");
-                        if (square.CurrentPiece is Queen)
-                            text.setText("Q");
-                        if (square.CurrentPiece is Knight)
-                            text.setText("N");
-                        p.Color = square.CurrentPiece.Side == Piece.side.Black ? Color.LightSalmon : Color.LightBlue;
-                        canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
-                        text.Draw(canvas);
-                    }
+                    square.CurrentPiece.Draw(canvas);
+                    //using (Paint p = new Paint())
+                    //{
+                    //    Text text = new Text("", square.CurrentPiece.GetX(),
+                    //        square.CurrentPiece.GetY(), Color.Black, 30);
+                    //    if (square.CurrentPiece is Pawn)
+                    //        text.setText("P");
+                    //    if (square.CurrentPiece is King)
+                    //        text.setText("K");
+                    //    if (square.CurrentPiece is Rook)
+                    //        text.setText("R");
+                    //    if (square.CurrentPiece is Bishop)
+                    //        text.setText("B");
+                    //    if (square.CurrentPiece is Queen)
+                    //        text.setText("Q");
+                    //    if (square.CurrentPiece is Knight)
+                    //        text.setText("N");
+                    //    p.Color = square.CurrentPiece.Side == Piece.side.Black ? Color.LightSalmon : Color.LightBlue;
+                    //    canvas.DrawCircle(square.CurrentPiece.GetX(), square.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
+                    //    text.Draw(canvas);
+                    //}
                 }
             }
 
@@ -233,24 +259,24 @@ namespace FinalProject
                 {
                     if (played != null && played.CurrentPiece != null)
                     {
-                        //played.CurrentPiece.Draw(canvas);
-                        Text text = new Text("", played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Color.Black);
-                        text.TextSize = 30;
-                        if (played.CurrentPiece is Pawn)
-                            text.setText("P");
-                        if (played.CurrentPiece is King)
-                            text.setText("K");
-                        if (played.CurrentPiece is Rook)
-                            text.setText("R");
-                        if (played.CurrentPiece is Bishop)
-                            text.setText("B");
-                        if (played.CurrentPiece is Queen)
-                            text.setText("Q");
-                        if (played.CurrentPiece is Knight)
-                            text.setText("N");
-                        p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Salmon : Color.DeepSkyBlue;
-                        canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
-                        text.Draw(canvas);
+                        played.CurrentPiece.Draw(canvas);
+                        //Text text = new Text("", played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Color.Black);
+                        //text.TextSize = 30;
+                        //if (played.CurrentPiece is Pawn)
+                        //    text.setText("P");
+                        //if (played.CurrentPiece is King)
+                        //    text.setText("K");
+                        //if (played.CurrentPiece is Rook)
+                        //    text.setText("R");
+                        //if (played.CurrentPiece is Bishop)
+                        //    text.setText("B");
+                        //if (played.CurrentPiece is Queen)
+                        //    text.setText("Q");
+                        //if (played.CurrentPiece is Knight)
+                        //    text.setText("N");
+                        //p.Color = played.CurrentPiece.Side == Piece.side.Black ? Color.Salmon : Color.DeepSkyBlue;
+                        //canvas.DrawCircle(played.CurrentPiece.GetX(), played.CurrentPiece.GetY(), Constants.SQUARE_SIDE * 0.4f, p);
+                        //text.Draw(canvas);
                     }
                 }
             }
@@ -303,6 +329,7 @@ namespace FinalProject
                             if (state != GameState.Promotion)
                             {
                                 turn = turn == Turn.Black ? turn = Turn.White : Turn.Black;
+                                if (turn == Turn.Black) blackTimer.Start(); else whiteTimer.Start();
                                 state = GameState.Idle;
                             }
                         }
@@ -314,6 +341,7 @@ namespace FinalProject
                     Invalidate();
                     break;
                 case GameState.GameOver:
+                    Invalidate();
                     break;
                 case GameState.Promotion:
                     for (int i = 0; i < promotionSquares.Length; i++)
@@ -382,28 +410,39 @@ namespace FinalProject
                 {
                     if (square.CurrentPiece.Side == Piece.side.White && black)
                     {
-                        black = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0;
+                        black = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0 || whiteTimer.IsOver(1);
                     }
                     else if (square.CurrentPiece.Side == Piece.side.Black && white)
                     {
-                        white = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0;
+                        white = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0 || blackTimer.IsOver(1);
                     }
                 }
             }
             if (black)
             {
-                if (!GetYourKing(Piece.side.White).OnCheck)
+                if (!GetYourKing(Piece.side.White).OnCheck && !whiteTimer.IsOver(1))
+                {
+                    Invalidate();
                     return 2;
+                }
+                Invalidate();
                 return 0;
             }
             if (white)
             {
-                if (!GetYourKing(Piece.side.Black).OnCheck)
+                if (!GetYourKing(Piece.side.Black).OnCheck && !blackTimer.IsOver(1))
+                {
+                    Invalidate();
                     return 2;
+                }
+                Invalidate();
                 return 1;
             }
             else
+            {
+                Invalidate();
                 return -1;
+            }
         }
 
         protected void SetPlayed(float x, float y)
