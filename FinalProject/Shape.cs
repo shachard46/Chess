@@ -47,7 +47,10 @@ namespace FinalProject
         {
             return painter;
         }
-
+        public void SetPainter(Paint paint)
+        {
+            painter = paint;
+        }
         public virtual bool IsInArea(float x, float y)
         {
             return x == this.x && y == this.y;

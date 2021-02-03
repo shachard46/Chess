@@ -12,6 +12,7 @@ namespace FinalProject
             this.h = h;
             this.w = w;
         }
+
         public override void Draw(Canvas canvas)
         {
             base.Draw(canvas);

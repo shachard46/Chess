@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>  
+<menu xmlns:android="http://schemas.android.com/apk/res/android">  
+   <group android:checkableBehavior="all">
+        <item android:id="@+id/assist"  
+            android:title="Hint Possible Places" android:showAsAction="always"/>  
+    </group>
+
+   <group android:checkableBehavior="single">
+      <item android:id="@+id/classic"  
+             android:title="Classic Game"/>  
+      <item android:id="@+id/blitz"  
+            android:title="Blitz Game"/>
+   </group>
+  
+</menu> 

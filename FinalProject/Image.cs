@@ -3,6 +3,7 @@ using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
 using Android.Views;
+using Android.Widget;
 
 namespace FinalProject
 {
@@ -14,15 +15,18 @@ namespace FinalProject
         public Bitmap image { get; set; }
         public static View View { get; set; }
 
-        public Image(float x, float y, int res, bool flip) : base(x, y, Color.White)
+        public Image(float x, float y, float density, int res, bool flip) : base(x, y, Color.White)
         {
             this.flip = flip;
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.InMutable = true;
             options.InScaled = true;
             options.InDensity = 1000;
-            options.InTargetDensity = BoardGame.Constants.SQUARE_SIDE * 2;
+            options.InTargetDensity = (int)density;
             image = BitmapFactory.DecodeResource(View.Resources, res, options);
+        }
+        public Image(float x, float y, int res, bool flip) : this(x, y, BoardGame.Constants.SQUARE_SIDE * 2, res, flip)
+        {
         }
         public override void Draw(Canvas canvas)
         {
@@ -35,7 +39,7 @@ namespace FinalProject
                 matrix.SetRotate(180, width / 2, height / 2);
             }
             matrix.PostTranslate(GetX() - BoardGame.Constants.SQUARE_SIDE - 10,
-                GetY() - BoardGame.Constants.SQUARE_SIDE - 10);
+                GetY() - BoardGame.Constants.SQUARE_SIDE);
             canvas.DrawBitmap(image, matrix, GetPainter());
         }
 

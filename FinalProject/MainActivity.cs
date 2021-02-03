@@ -6,6 +6,7 @@ using Android.Widget;
 using Android.Content;
 using Android.Content.PM;
 using System.Collections.Generic;
+using Android.Views;
 
 namespace FinalProject
 {
@@ -15,6 +16,8 @@ namespace FinalProject
         Button game;
         Button online;
         Button offline;
+        bool hint = false;
+        bool isClassic = true;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,10 +31,36 @@ namespace FinalProject
             game.Click += Game_Click;
             offline.Click += Offline_Click;
         }
+        public override bool OnCreateOptionsMenu(IMenu menu)
+        {
+            MenuInflater.Inflate(Resource.Menu.game_options_menu, menu);
 
+            return base.OnCreateOptionsMenu(menu);
+        }
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.assist:
+                    item.SetChecked(!item.IsChecked);
+                    hint = item.IsChecked;
+                    break;
+                case Resource.Id.classic:
+                    item.SetChecked(!item.IsChecked);
+                    isClassic = item.IsChecked;
+                    break;
+                case Resource.Id.blitz:
+                    item.SetChecked(!item.IsChecked);
+                    isClassic = !item.IsChecked;
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
         private void Offline_Click(object sender, System.EventArgs e)
         {
             Intent gameActivity = new Intent(this,typeof(GameActivity));
+            gameActivity.PutExtra("hint", hint);
+            gameActivity.PutExtra("duration", isClassic ? 60 : 5);
             StartActivity(gameActivity);
         }
 

@@ -18,7 +18,6 @@ namespace FinalProject
             possible.StrokeWidth = 4;
             possible.Color = Color.Red;
         }
-
         public float[] Center { get; set; }
         public Piece CurrentPiece { get; set; } = null;
 

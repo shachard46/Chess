@@ -70,12 +70,10 @@ namespace FinalProject
             {
                 target.CurrentPiece = org.CurrentPiece;
                 org.CurrentPiece = null;
-                target.CurrentPiece.SetCords(target.Center);
                 GameActivity.boardGame.GetYourKing(Side).OnCheck = false;
                 GameActivity.boardGame.GetYourKing(Side).IsOnCheck(GameActivity.boardGame.Squares);
                 org.CurrentPiece = target.CurrentPiece;
                 target.CurrentPiece = c;
-                org.CurrentPiece.SetCords(org.Center);
                 if (!GameActivity.boardGame.GetYourKing(Side).OnCheck)
                 {
                     return true;

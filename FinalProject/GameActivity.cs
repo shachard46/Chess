@@ -29,7 +29,8 @@ namespace FinalProject
             back = FindViewById<Button>(Resource.Id.back);
 
             boardGame = new BoardGame(this, new TimerHandler(yourTime, this),
-                new TimerHandler(opponentTime, this));
+                new TimerHandler(opponentTime, this),
+                Intent.GetBooleanExtra("hint", false), Intent.GetIntExtra("duration", 60));
             frameLayout.AddView(boardGame);
 
             back.Click += Back_Click;

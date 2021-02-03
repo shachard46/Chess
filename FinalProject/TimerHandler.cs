@@ -26,7 +26,7 @@ namespace FinalProject
                 else if (msg.Arg1 % 60 < 10)
                     text.Text = string.Format("{0}:0{1}", msg.Arg1 / 60, msg.Arg1 % 60);
                 else
-                    text.Text = string.Format("%d:{1}", msg.Arg1 / 60, msg.Arg1 % 60);
+                    text.Text = string.Format("{0}:{1}", msg.Arg1 / 60, msg.Arg1 % 60);
             });
         }
 
