@@ -10,7 +10,7 @@ namespace FinalProject.Pieces
 
         public bool OnCheck { get; set; } = false;
 
-        public King(float[] cords, side side) : base(cords, side == side.Black ? Resource.Drawable.black_king : Resource.Drawable.white_king, side)
+        public King(float[] cords, Side side) : base(cords, side == Side.Black ? Resource.Drawable.black_king : Resource.Drawable.white_king, side)
         {
             hasMoved = false;
         }

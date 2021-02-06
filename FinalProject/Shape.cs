@@ -58,7 +58,11 @@ namespace FinalProject
 
         public virtual Shape Flip()
         {
-            return new Shape(GetY(), GetX(), GetPainter().Color);
+            return Flip(0, 0);
+        }
+        public virtual Shape Flip(float addx, float addy)
+        {
+            return new Shape(GetY() + addx, GetX() + addy, GetPainter().Color);
         }
     }
 }

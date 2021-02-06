@@ -10,7 +10,7 @@ using Android.Views;
 
 namespace FinalProject
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "Chess", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
         Button game;
@@ -66,10 +66,11 @@ namespace FinalProject
 
         private void Game_Click(object sender, System.EventArgs e)
         {
-            online.Visibility = Android.Views.ViewStates.Visible;
-            offline.Visibility = Android.Views.ViewStates.Visible;
-            online.LayoutParameters = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WrapContent);
-            offline.LayoutParameters = new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WrapContent);
+            bool visible = online.Visibility == ViewStates.Visible;
+            online.Visibility = visible ? ViewStates.Invisible : ViewStates.Visible;
+            offline.Visibility = visible ? ViewStates.Invisible : ViewStates.Visible;
+            online.LayoutParameters = new LinearLayout.LayoutParams(Util.convertDpToPixel(150, this), ViewGroup.LayoutParams.WrapContent);
+            offline.LayoutParameters = new LinearLayout.LayoutParams(Util.convertDpToPixel(150, this), ViewGroup.LayoutParams.WrapContent);
         }
     }
 }

@@ -12,15 +12,15 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="Chess"
-		android:textSize="0px"
-		android:textColor="#CD853F"/>
+		android:textSize="60sp"
+		android:textColor="#000000"/>
 	<Button
 		android:layout_marginTop="40px"
 		android:text="Game"
-		android:layout_width="600px"
+		android:layout_width="300dp"
 		android:layout_height="wrap_content"
 		android:id="@+id/game"
-		android:textSize="50px"
+		android:textSize="30sp"
 		android:textColor="#CD853F"
 		android:gravity="center"
 		/>
@@ -31,31 +31,32 @@
 		android:gravity="center_horizontal">
 		<Button
 			android:text="online"
-			android:layout_width="300px"
+			android:layout_width="0px"
 			android:layout_height="0px"
 			android:visibility="invisible"
 			android:gravity="center"
 			android:id="@+id/online"
-			android:textSize="30px"/>
+			android:textSize="15sp"/>
 		<Button
 			android:text="offline"
-			android:layout_width="300px"
+			android:layout_width="0px"
 			android:layout_height="0px"
 			android:visibility="invisible"
 			android:gravity="center"
 			android:id="@+id/offline"
-			android:textSize="30px"/>
+			android:textSize="15sp"/>
 	</LinearLayout>
 	<Button
 		android:text="Store"
-		android:layout_width="600px"
+		android:textColor="#CD853F"
+		android:layout_width="300dp"
 		android:gravity="center"
 		android:layout_height="wrap_content"
-		android:textSize="50px"/>
+		android:textSize="30sp"/>
 	<TextView
 		android:layout_marginTop="100px"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:text="You Have: 100 $"
-		android:textSize="50px"/>
+		android:textSize="30sp"/>
 </LinearLayout>

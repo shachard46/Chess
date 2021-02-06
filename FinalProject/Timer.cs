@@ -9,6 +9,7 @@ namespace FinalProject
         private TimerHandler timerHandler;
         private int counter;
         BoardGame.Turn turn;
+        bool stop = false;
         public Timer(TimerHandler timerHandler, int counter, BoardGame.Turn turn)
         {
             this.turn = turn;
@@ -18,7 +19,7 @@ namespace FinalProject
 
         public void Run()
         {
-            while (GameActivity.boardGame.turn == turn)
+            while (GameActivity.boardGame.turn == turn && !stop)
             {
                 counter++;
                 Thread.Sleep(1000);
@@ -33,7 +34,10 @@ namespace FinalProject
             Thread t = new Thread(startThread);
             t.Start();
         }
-
+        public void Stop()
+        {
+            stop = true;
+        }
         public bool IsOver(int limit)
         {
             return counter >= 60 * limit;

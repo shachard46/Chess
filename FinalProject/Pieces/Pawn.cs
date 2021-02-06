@@ -49,7 +49,9 @@ namespace FinalProject.Pieces
                 }
 
             }
-            if (((y == 1 && Side == side.Black) || (y == 6 && Side == side.White)) && CheckIfMoveLegal(GameActivity.boardGame.Squares[y + 2 * direction, x]))
+            if (((y == 1 && Side == side.Black) || (y == 6 && Side == side.White)) &&
+                CheckIfMoveLegal(GameActivity.boardGame.Squares[y + 2 * direction, x]) &&
+                squares[y + 2 * direction, x].CurrentPiece == null)
             {
                 possibilities.Add(squares[y + 2 * direction, x]);
             }

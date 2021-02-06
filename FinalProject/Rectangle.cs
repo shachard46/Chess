@@ -29,7 +29,12 @@ namespace FinalProject
         }
         public override Shape Flip()
         {
-            return new Rectangle(GetY(), GetX(), w, h, GetPainter().Color);
+            return Flip(0,0);
+        }
+
+        public override Shape Flip(float addx, float addy)
+        {
+            return new Rectangle(GetY() + addx, GetX() + addy, w, h, GetPainter().Color);
         }
 
         public override bool IsInArea(float x, float y)

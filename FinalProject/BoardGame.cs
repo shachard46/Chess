@@ -23,7 +23,7 @@ namespace FinalProject
         }
         public struct Constants
         {
-            public static int SQUARE_SIDE = Util.convertDpToPixel(37, context);
+            public static int SQUARE_SIDE = 0;
             public const int R_AND_C = 8;
         }
 
@@ -42,6 +42,8 @@ namespace FinalProject
         public Turn turn = Turn.White;
         private bool hint;
         private int duration;
+        private float init;
+
         public BoardSquare[,] Squares { get => squares; set => squares = value; }
         public BoardSquare Played { get => played; set => played = value; }
         public GameState State { get => state; set => state = value; }
@@ -51,8 +53,11 @@ namespace FinalProject
         public BoardGame(Context context, TimerHandler whiteHandler, TimerHandler blackHandler, bool hint, int duration) : base(context)
         {
             BoardGame.context = context;
+            Constants.SQUARE_SIDE = Util.convertDpToPixel(37, context);
             this.hint = hint;
             this.duration = duration;
+            init = (Util.convertDpToPixel(400, context) - 9.5f * Constants.SQUARE_SIDE) / 2;
+
             actions = new GameActions(this);
             Image.View = this;
             GenerateBoard();
@@ -76,7 +81,7 @@ namespace FinalProject
                     color = color == Color.White ? Color.Black : Color.White;
                     Rectangle rectangle = new Rectangle(
                         j * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 1.25f,
-                        i * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 1.25f,
+                        i * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 1.25f + init,
                         Constants.SQUARE_SIDE, Constants.SQUARE_SIDE, color);
                     Squares[i, j] = new BoardSquare(rectangle, null);
                 }
@@ -151,13 +156,14 @@ namespace FinalProject
             for (int s = 0; s < 2; s++)
             {
 
-                Rectangle squareIndexRect = new Rectangle(Constants.SQUARE_SIDE * 0.25f,
-                    Constants.SQUARE_SIDE * 0.375f
-                    + s * (Constants.R_AND_C * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 0.75f),
-                    Constants.SQUARE_SIDE * 0.75f, Constants.SQUARE_SIDE, Color.White);
-                Text squareIndex = new Text("", Constants.SQUARE_SIDE * 0.25f,
-                    Constants.SQUARE_SIDE * 0.375f
-                    + s * (Constants.R_AND_C * Constants.SQUARE_SIDE + Constants.SQUARE_SIDE * 0.75f), Color.Black, 30);
+                Rectangle squareIndexRect = new Rectangle(0.25f * Constants.SQUARE_SIDE,
+                     0.375f *Constants.SQUARE_SIDE +
+                     s * ((Constants.R_AND_C + 0.75f) * Constants.SQUARE_SIDE) + init,
+                     Constants.SQUARE_SIDE * 0.75f, Constants.SQUARE_SIDE, Color.AntiqueWhite);
+
+                Text squareIndex = new Text("", 0.25f * Constants.SQUARE_SIDE,
+                    0.375f * Constants.SQUARE_SIDE +
+                    s * ((Constants.R_AND_C + 0.75f) * Constants.SQUARE_SIDE) + init, Color.SandyBrown, 35);
 
                 for (int i = 0; i < Constants.R_AND_C; i++)
                 {
@@ -175,10 +181,12 @@ namespace FinalProject
                     canvas.Restore();
 
                     squareIndex.setText(vert.ToString());
-                    squareIndexRect.Flip().Draw(canvas);
+                    squareIndexRect.Flip(-init, init).Draw(canvas);
+                    Text fliped = (Text)squareIndex.Flip(-init, init);
                     canvas.Save();
-                    canvas.Rotate(180 * s, squareIndex.Flip().GetX(), squareIndex.Flip().GetY());
-                    squareIndex.Flip().Draw(canvas);
+                    canvas.Rotate(180 * s, fliped.GetX(),
+                        fliped.GetY());
+                    fliped.Draw(canvas);
                     canvas.Restore();
 
                 }
@@ -414,12 +422,21 @@ namespace FinalProject
                     if (square.CurrentPiece.Side == Piece.side.White && black)
                     {
                         black = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0 || whiteTimer.IsOver(duration);
+                        if (!black)
+                        {
+                            int a = 0;
+                        }
                     }
                     else if (square.CurrentPiece.Side == Piece.side.Black && white)
                     {
                         white = square.CurrentPiece.GetPossiblePlaces(squares).Count == 0 || blackTimer.IsOver(duration);
                     }
                 }
+            }
+            if(white || black)
+            {
+                blackTimer.Stop();
+                whiteTimer.Stop();
             }
             if (black)
             {

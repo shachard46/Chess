@@ -6,7 +6,7 @@ namespace FinalProject.Pieces
 {
     public class Bishop : Piece
     {
-        public Bishop(float[] cords, side side) : base(cords, side == side.Black ? Resource.Drawable.black_bishop : Resource.Drawable.white_bishop, side)
+        public Bishop(float[] cords, Side side) : base(cords, side == Side.Black ? Resource.Drawable.black_bishop : Resource.Drawable.white_bishop, side)
         {
         }
 

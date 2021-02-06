@@ -17,7 +17,7 @@ namespace FinalProject
             this.textSize = textSize;
             this.text = text;
             GetPainter().TextAlign = Paint.Align.Center;
-            SetY(GetY());// + textSize / 10
+            SetY(GetY());
         }
 
         public void setText(string text)
@@ -34,7 +34,13 @@ namespace FinalProject
 
         public override Shape Flip()
         {
-            return new Text(text, GetY(), GetX(), GetPainter().Color, textSize);// - textSize / 10
+            return Flip(0, 0);
+        }
+
+        public override Shape Flip(float addx, float addy)
+        {
+            return new Text(text, GetY() + addx, GetX()+ addy, GetPainter().Color, textSize);
+
         }
     }
 }

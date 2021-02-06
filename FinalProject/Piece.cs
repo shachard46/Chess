@@ -14,10 +14,8 @@ namespace FinalProject
             Side = side;
             Eaten = false;
         }
-        public Piece(float[] cords, int res, side side) : base(cords[0], cords[1], res, side == side.Black)
+        public Piece(float[] cords, int res, side side) : this(cords[0], cords[1], res, side)
         {
-            Side = side;
-            Eaten = false;
         }
         public enum side
         {

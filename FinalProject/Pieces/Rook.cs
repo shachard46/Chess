@@ -10,8 +10,8 @@ namespace FinalProject.Pieces
     public class Rook : Piece, CastledPiece
     {
         private bool hasMoved;
-        public Rook(float[] cords, side side) : base(cords,
-            side == side.Black ? Resource.Drawable.black_rook : Resource.Drawable.white_rook, side)
+        public Rook(float[] cords, Side side) : base(cords,
+            side == Side.Black ? Resource.Drawable.black_rook : Resource.Drawable.white_rook, side)
         {
         }
 
