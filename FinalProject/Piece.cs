@@ -9,19 +9,19 @@ namespace FinalProject
 {
     public abstract class Piece : Image
     {
-        public Piece(float x, float y, int res, side side) : base(x, y, res, side == side.Black)
+        public Piece(float x, float y, int res, Side side) : base(x, y, res, side == Side.Black)
         {
-            Side = side;
+            this.side = side;
             Eaten = false;
         }
-        public Piece(float[] cords, int res, side side) : this(cords[0], cords[1], res, side)
+        public Piece(float[] cords, int res, Side side) : this(cords[0], cords[1], res, side)
         {
         }
-        public enum side
+        public enum Side
         {
             White, Black
         }
-        public side Side { get; set; }
+        public Side side { get; set; }
         public bool Eaten { get; set; }
         public void SetCords(float[] cords)
         {
@@ -45,7 +45,7 @@ namespace FinalProject
                     }
                     return true;
                 }
-                else if (squares[y, x].CurrentPiece != null && squares[y, x].CurrentPiece.Side == this.Side)
+                else if (squares[y, x].CurrentPiece != null && squares[y, x].CurrentPiece.side == this.side)
                 {
                     return false;
                 }
@@ -64,15 +64,15 @@ namespace FinalProject
         {
             var c = target.CurrentPiece;
             var org = GameActivity.boardGame.GetBoardSquareByPiece(this);
-            if (org.CurrentPiece != null && (int)GameActivity.boardGame.turn == (int)org.CurrentPiece.Side)
+            if (org.CurrentPiece != null && (int)GameActivity.boardGame.turn == (int)org.CurrentPiece.side)
             {
                 target.CurrentPiece = org.CurrentPiece;
                 org.CurrentPiece = null;
-                GameActivity.boardGame.GetYourKing(Side).OnCheck = false;
-                GameActivity.boardGame.GetYourKing(Side).IsOnCheck(GameActivity.boardGame.Squares);
+                GameActivity.boardGame.GetYourKing(side).OnCheck = false;
+                GameActivity.boardGame.GetYourKing(side).IsOnCheck(GameActivity.boardGame.Squares);
                 org.CurrentPiece = target.CurrentPiece;
                 target.CurrentPiece = c;
-                if (!GameActivity.boardGame.GetYourKing(Side).OnCheck)
+                if (!GameActivity.boardGame.GetYourKing(side).OnCheck)
                 {
                     return true;
                 }

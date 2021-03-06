@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "76518588072",
+    "project_id": "chess-6b48d",
+    "storage_bucket": "chess-6b48d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76518588072:android:2d5365077dcf5682f1cc9d",
+        "android_client_info": {
+          "package_name": "com.companyname.finalproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76518588072-ea8nq3sat74prmcoc3pfslgjv3jvu5hl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhO5XaySaLwBKs8KZPlMBNo6OfoBOpnS0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76518588072-ea8nq3sat74prmcoc3pfslgjv3jvu5hl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

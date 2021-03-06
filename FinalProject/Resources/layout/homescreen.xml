@@ -51,6 +51,7 @@
 		android:textColor="#CD853F"
 		android:layout_width="300dp"
 		android:gravity="center"
+		android:id="@+id/store"
 		android:layout_height="wrap_content"
 		android:textSize="30sp"/>
 	<TextView

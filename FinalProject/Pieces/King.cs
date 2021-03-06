@@ -10,7 +10,7 @@ namespace FinalProject.Pieces
 
         public bool OnCheck { get; set; } = false;
 
-        public King(float[] cords, Side side) : base(cords, side == Side.Black ? Resource.Drawable.black_king : Resource.Drawable.white_king, side)
+        public King(float[] cords, Side side, int res) : base(cords, res, side)
         {
             hasMoved = false;
         }
@@ -18,7 +18,7 @@ namespace FinalProject.Pieces
         {
             foreach (BoardSquare square in squares)
             {
-                if (square.CurrentPiece != null && square.CurrentPiece.Side != Side)
+                if (square.CurrentPiece != null && square.CurrentPiece.side != side)
                 {
                     if (square.CurrentPiece.GetPossiblePlaces(squares).Contains(GameActivity.boardGame.GetBoardSquareByPiece(this)))
                     {

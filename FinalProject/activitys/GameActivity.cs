@@ -17,11 +17,14 @@ namespace FinalProject
         TextView opponentTime;
         Button back;
         bool toggle;
+        private FirebaseHelper instance; 
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             // Set our view from the "main" layout resource
+            instance = new FirebaseHelper(this);
             SetContentView(Resource.Layout.game_board);
             frameLayout = FindViewById<FrameLayout>(Resource.Id.frame);
             yourTime = FindViewById<TextView>(Resource.Id.your);
@@ -38,6 +41,7 @@ namespace FinalProject
 
         private void Back_Click(object sender, EventArgs e)
         {
+            instance.FetchPositions();
             var builder = new AlertDialog.Builder(this);
             builder.SetTitle("Are you sure you want to go back?");
 

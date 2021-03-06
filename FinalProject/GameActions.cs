@@ -49,7 +49,7 @@ namespace FinalProject
                 return true;
             }
             else if (destination != null && destination.CurrentPiece != null &&
-                destination.CurrentPiece.Side.Equals(source.CurrentPiece.Side))
+                destination.CurrentPiece.side.Equals(source.CurrentPiece.side))
             {
                 boardGame.Played = destination;
             }
@@ -62,16 +62,20 @@ namespace FinalProject
             switch (type)
             {
                 case 0:
-                    boardGame.Played.CurrentPiece = new Rook(boardGame.Played.Center, boardGame.Played.CurrentPiece.Side);
+                    boardGame.Played.CurrentPiece = new Rook(boardGame.Played.Center, boardGame.Played.CurrentPiece.side,
+                        boardGame.Played.CurrentPiece.Res);
                     break;
                 case 1:
-                    boardGame.Played.CurrentPiece = new Bishop(boardGame.Played.Center, boardGame.Played.CurrentPiece.Side);
+                    boardGame.Played.CurrentPiece = new Bishop(boardGame.Played.Center, boardGame.Played.CurrentPiece.side,
+                        boardGame.Played.CurrentPiece.Res);
                     break;
                 case 2:
-                    boardGame.Played.CurrentPiece = new Queen(boardGame.Played.Center, boardGame.Played.CurrentPiece.Side);
+                    boardGame.Played.CurrentPiece = new Queen(boardGame.Played.Center, boardGame.Played.CurrentPiece.side,
+                        boardGame.Played.CurrentPiece.Res);
                     break;
                 case 3:
-                    boardGame.Played.CurrentPiece = new Knight(boardGame.Played.Center, boardGame.Played.CurrentPiece.Side);
+                    boardGame.Played.CurrentPiece = new Knight(boardGame.Played.Center, boardGame.Played.CurrentPiece.side,
+                        boardGame.Played.CurrentPiece.Res);
                     break;
             }
             boardGame.turn = boardGame.turn == BoardGame.Turn.Black ? boardGame.turn = BoardGame.Turn.White : BoardGame.Turn.Black;

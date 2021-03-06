@@ -7,6 +7,7 @@ using Android.Content;
 using Android.Content.PM;
 using System.Collections.Generic;
 using Android.Views;
+using FinalProject.activitys;
 
 namespace FinalProject
 {
@@ -16,6 +17,7 @@ namespace FinalProject
         Button game;
         Button online;
         Button offline;
+        Button store;
         bool hint = false;
         bool isClassic = true;
         protected override void OnCreate(Bundle savedInstanceState)
@@ -27,10 +29,19 @@ namespace FinalProject
             game = FindViewById<Button>(Resource.Id.game);
             online = FindViewById<Button>(Resource.Id.online);
             offline = FindViewById<Button>(Resource.Id.offline);
+            store = FindViewById<Button>(Resource.Id.store);
 
             game.Click += Game_Click;
             offline.Click += Offline_Click;
+            store.Click += Store_Click;
         }
+
+        private void Store_Click(object sender, System.EventArgs e)
+        {
+            Intent storeActivity = new Intent(this, typeof(StoreActivity));
+            StartActivityForResult(storeActivity, 0);
+        }
+
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.game_options_menu, menu);

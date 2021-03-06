@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Content;
 using Android.Graphics;
+using Android.Preferences;
 
 namespace FinalProject.Pieces
 {
     public class Bishop : Piece
     {
-        public Bishop(float[] cords, Side side) : base(cords, side == Side.Black ? Resource.Drawable.black_bishop : Resource.Drawable.white_bishop, side)
+        public Bishop(float[] cords, Side side, int res) : base(cords, res, side)
         {
         }
 

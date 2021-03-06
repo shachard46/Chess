@@ -14,10 +14,12 @@ namespace FinalProject
         bool flip;
         public Bitmap image { get; set; }
         public static View View { get; set; }
+        public int Res { get; set; }
 
         public Image(float x, float y, float density, int res, bool flip) : base(x, y, Color.White)
         {
             this.flip = flip;
+            this.Res = res;
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.InMutable = true;
             options.InScaled = true;

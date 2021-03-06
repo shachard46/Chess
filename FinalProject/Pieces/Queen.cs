@@ -6,7 +6,7 @@ namespace FinalProject.Pieces
 {
     public class Queen : Piece
     {
-        public Queen(float[] cords, Side side) : base(cords, side == Side.Black ? Resource.Drawable.black_queen : Resource.Drawable.white_queen, side)
+        public Queen(float[] cords, Side side, int res) : base(cords, res, side)
         {
         }
 
